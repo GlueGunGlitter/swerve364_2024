@@ -22,6 +22,7 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
+    public static final XboxController xboxController = new XboxController(0);
     private final Joystick driver = new Joystick(0);
 
     /* Drive Controls */
@@ -32,9 +33,14 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton turn_90_degrees = new JoystickButton(driver, XboxController.Button.kX.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    public static final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+    public static final IntakeCommand m_IntakeCommand = new IntakeCommand();
+    public static final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+    public static final ShooterCommand m_ShooterCommand = new ShooterCommand();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,6 +69,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        turn_90_degrees.onTrue(new InstantCommand(() -> s_Swerve.set90DegPos()));
     }
 
     /**

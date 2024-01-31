@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,11 +22,17 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+
   public static final CTREConfigs ctreConfigs = new CTREConfigs();
 
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+
+  public static GenericEntry intakeHigherMotorSpeed;
+  public static GenericEntry intakeLowerMotorSpeed;
+  public static GenericEntry nonStaticShooterMotorSpeed;
+  public static GenericEntry staticShooterMotorSpeed;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -31,9 +41,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    CameraServer.startAutomaticCapture();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
+    smartDashboard();
     m_robotContainer = new RobotContainer();
   }
 
@@ -57,6 +69,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().schedule(RobotContainer.m_ShooterCommand);
+    CommandScheduler.getInstance().schedule(RobotContainer.m_IntakeCommand);
     CommandScheduler.getInstance().run();
   }
 
@@ -113,5 +127,20 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+  }
+
+  public void smartDashboard() {
+    intakeHigherMotorSpeed = Shuffleboard.getTab("Intake").add("Higher motor speed", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+    intakeLowerMotorSpeed = Shuffleboard.getTab("Intake").add("Lower motor speed", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+    nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+    staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
   }
 }

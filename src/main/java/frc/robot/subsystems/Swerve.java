@@ -92,12 +92,17 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return getPose().getRotation();
+        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees() * (-1));
     }
 
     public void setHeading(Rotation2d heading) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), heading));
+    }
+
+    public void set90DegPos() {
+        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
+                new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(90)));
     }
 
     public void zeroHeading() {
@@ -124,5 +129,6 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
+        System.out.println(getHeading());
     }
 }
