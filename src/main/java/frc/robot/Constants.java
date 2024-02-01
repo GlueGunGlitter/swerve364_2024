@@ -39,7 +39,7 @@ public final class Constants {
                                                 .Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L3);
 
                 /* Drivetrain Constants */
-                public static final double trackWidth = 0.725; // TODO: This must be tuned to specific robot
+                public static final double trackWidth = 0.775; // TODO: This must be tuned to specific robot
                 public static final double wheelBase = 0.725; // TODO: This must be tuned to specific robot
                 public static final double wheelCircumference = chosenModule.wheelCircumference;
 
