@@ -3,6 +3,9 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -42,6 +45,7 @@ public final class Constants {
                 public static final double trackWidth = 0.725; // TODO: This must be tuned to specific robot
                 public static final double wheelBase = 0.725; // TODO: This must be tuned to specific robot
                 public static final double wheelCircumference = chosenModule.wheelCircumference;
+                public static final double robotRadius = 436.46;
 
                 /*
                  * Swerve Kinematics
@@ -170,5 +174,13 @@ public final class Constants {
                 /* Constraint for the motion profilied robot angle controller */
                 public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+                public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+                        new PIDConstants(5.0, 0, 0), // Translation constants 
+                        new PIDConstants(5.0, 0, 0), // Rotation constants 
+                        kMaxSpeedMetersPerSecond, 
+                        Swerve.robotRadius, // Drive base radius (distance from center to furthest module) 
+                        new ReplanningConfig()
+                );
         }
 }

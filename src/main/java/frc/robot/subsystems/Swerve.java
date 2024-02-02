@@ -3,16 +3,17 @@ package frc.robot.subsystems;
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
 
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
-import com.ctre.phoenix6.hardware.Pigeon2;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,6 +28,27 @@ public class Swerve extends SubsystemBase {
     private final AHRS gyro;
 
     public Swerve() {
+
+        AutoBuilder.configureHolonomic(
+                this::getPose,
+                this::setPose,
+                this::getSpeeds,
+                this::driveSpeeds,
+                Constants.AutoConstants.pathFollowerConfig,
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this);
+
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.zeroYaw();
 
@@ -55,6 +77,15 @@ public class Swerve extends SubsystemBase {
 
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+        }
+    }
+
+    public void driveSpeeds(ChassisSpeeds fieldRelativeSpeeds){
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+            ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeading())
+        );
+        for (SwerveModule mod : mSwerveMods) {
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], true);
         }
     }
 
@@ -100,11 +131,6 @@ public class Swerve extends SubsystemBase {
                 new Pose2d(getPose().getTranslation(), heading));
     }
 
-    public void set90DegPos() {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
-                new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(90)));
-    }
-
     public void zeroHeading() {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
@@ -118,6 +144,10 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
+    }
+
+    public ChassisSpeeds getSpeeds() {
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
     }
 
     @Override
