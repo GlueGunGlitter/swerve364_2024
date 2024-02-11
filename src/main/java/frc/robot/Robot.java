@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   public static GenericEntry intakeLowerMotorSpeed;
   public static GenericEntry nonStaticShooterMotorSpeed;
   public static GenericEntry staticShooterMotorSpeed;
+  public static GenericEntry ConveyorTalon;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -70,7 +71,6 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().schedule(RobotContainer.m_ShooterCommand);
-    CommandScheduler.getInstance().schedule(RobotContainer.m_IntakeCommand);
     CommandScheduler.getInstance().run();
   }
 
@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    m_robotContainer.s_Swerve.zeroHeading();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -104,6 +105,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -116,6 +118,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    RobotContainer.rightBumperPressed = RobotContainer.xboxController.getRightBumperPressed();
   }
 
   @Override
@@ -142,5 +145,9 @@ public class Robot extends TimedRobot {
     staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .getEntry();
+    ConveyorTalon = Shuffleboard.getTab("ConvoyerMotorSpeed").add("Conveyor motor speed", 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+
   }
 }

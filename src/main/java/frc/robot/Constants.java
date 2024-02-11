@@ -3,6 +3,9 @@ package frc.robot;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -20,6 +23,11 @@ public final class Constants {
                 // the ports needs to be change
                 public static final int NON_STATIC_MOTOR_PORT = 55;
                 public static final int STATIC_MOTOR_PORT = 30;
+        }
+
+        public class ConveyorConstants {
+                public static final int CONVEYOR_TALON_PORT = 40;
+
         }
 
         public static final class IntakeConstants {
@@ -42,6 +50,7 @@ public final class Constants {
                 public static final double trackWidth = 0.775; // TODO: This must be tuned to specific robot
                 public static final double wheelBase = 0.725; // TODO: This must be tuned to specific robot
                 public static final double wheelCircumference = chosenModule.wheelCircumference;
+                public static final double robotRadius = 436.46;
 
                 /*
                  * Swerve Kinematics
@@ -170,5 +179,13 @@ public final class Constants {
                 /* Constraint for the motion profilied robot angle controller */
                 public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+
+                public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+                                new PIDConstants(10, 0.0, 1), // Translation PID constants
+                                new PIDConstants(0.05, 0.0,
+                                                0.0001), // Rotation constants
+                                kMaxSpeedMetersPerSecond,
+                                Swerve.robotRadius, // Drive base radius (distance from center to furthest module)
+                                new ReplanningConfig());
         }
 }
