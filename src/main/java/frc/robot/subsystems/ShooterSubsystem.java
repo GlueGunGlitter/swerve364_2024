@@ -15,7 +15,8 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
   CANSparkFlex nonStaticMotor = new CANSparkFlex(Constants.ShooterConstants.NON_STATIC_MOTOR_PORT,
       MotorType.kBrushless);
-  WPI_VictorSPX staticMotor = new WPI_VictorSPX(Constants.ShooterConstants.STATIC_MOTOR_PORT);
+  CANSparkFlex staticMotor = new CANSparkFlex(Constants.ShooterConstants.STATIC_MOTOR_PORT,
+      MotorType.kBrushless);
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {

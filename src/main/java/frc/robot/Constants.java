@@ -21,20 +21,22 @@ public final class Constants {
         public class ShooterConstants {
 
                 // the ports needs to be change
-                public static final int NON_STATIC_MOTOR_PORT = 55;
-                public static final int STATIC_MOTOR_PORT = 30;
-        }
-
-        public class ConveyorConstants {
-                public static final int CONVEYOR_TALON_PORT = 40;
+                public static final int NON_STATIC_MOTOR_PORT = 31;
+                public static final int STATIC_MOTOR_PORT = 32;
 
         }
 
-        public static final class IntakeConstants {
+        // public class ConveyorConstants {
+        // public static final int CONVEYOR_TALON_PORT = 40;
+
+        // }
+
+        public static final class TransportationConstants {
 
                 // the ports needs to be change
-                public static final int INTAKE_LOWER_MOTOR_PORT = 21;
-                public static final int INTAKE_HIGHER_MOTOR_PORT = 22;
+                public static final int INTAKE_LOWER_MOTOR_PORT = 22;
+                public static final int INTAKE_HIGHER_MOTOR_PORT = 21;
+                public static final int TRANSPORTATION_MOTOR_PORT = 40;
 
         }
 

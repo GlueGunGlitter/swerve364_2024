@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.swing.RootPaneContainer;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,7 +35,7 @@ public class Robot extends TimedRobot {
   public static GenericEntry intakeLowerMotorSpeed;
   public static GenericEntry nonStaticShooterMotorSpeed;
   public static GenericEntry staticShooterMotorSpeed;
-  public static GenericEntry ConveyorTalon;
+  public static GenericEntry transportationMotorSpeed;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -42,6 +44,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
     CameraServer.startAutomaticCapture();
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -70,6 +73,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().schedule(RobotContainer.m_TransportationCommand);
     CommandScheduler.getInstance().schedule(RobotContainer.m_ShooterCommand);
     CommandScheduler.getInstance().run();
   }
@@ -118,7 +122,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    RobotContainer.rightBumperPressed = RobotContainer.xboxController.getRightBumperPressed();
+
   }
 
   @Override
@@ -133,20 +137,20 @@ public class Robot extends TimedRobot {
   }
 
   public void smartDashboard() {
-    intakeHigherMotorSpeed = Shuffleboard.getTab("Intake").add("Higher motor speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
+    intakeHigherMotorSpeed = Shuffleboard.getTab("Transportation").add("Higher motor speed", 0)
+        .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    intakeLowerMotorSpeed = Shuffleboard.getTab("Intake").add("Lower motor speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
+    intakeLowerMotorSpeed = Shuffleboard.getTab("Transportation").add("Lower motor speed", 0)
+        .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
     nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
     staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    ConveyorTalon = Shuffleboard.getTab("ConvoyerMotorSpeed").add("Conveyor motor speed", 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
+    transportationMotorSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor speed", 0)
+        .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
 
   }
