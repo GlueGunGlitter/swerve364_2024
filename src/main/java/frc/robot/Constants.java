@@ -25,6 +25,11 @@ public final class Constants {
                 public static final int STATIC_MOTOR_PORT = 30;
         }
 
+        public class ConveyorConstants {
+                public static final int CONVEYOR_TALON_PORT = 40;
+
+        }
+
         public static final class IntakeConstants {
 
                 // the ports needs to be change
@@ -42,7 +47,7 @@ public final class Constants {
                                                 .Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L3);
 
                 /* Drivetrain Constants */
-                public static final double trackWidth = 0.725; // TODO: This must be tuned to specific robot
+                public static final double trackWidth = 0.775; // TODO: This must be tuned to specific robot
                 public static final double wheelBase = 0.725; // TODO: This must be tuned to specific robot
                 public static final double wheelCircumference = chosenModule.wheelCircumference;
                 public static final double robotRadius = 436.46;
@@ -176,11 +181,11 @@ public final class Constants {
                                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
                 public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-                        new PIDConstants(5.0, 0, 0), // Translation constants 
-                        new PIDConstants(5.0, 0, 0), // Rotation constants 
-                        kMaxSpeedMetersPerSecond, 
-                        Swerve.robotRadius, // Drive base radius (distance from center to furthest module) 
-                        new ReplanningConfig()
-                );
+                                new PIDConstants(10, 0.0, 1), // Translation PID constants
+                                new PIDConstants(0.05, 0.0,
+                                                0.0001), // Rotation constants
+                                kMaxSpeedMetersPerSecond,
+                                Swerve.robotRadius, // Drive base radius (distance from center to furthest module)
+                                new ReplanningConfig());
         }
 }

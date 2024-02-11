@@ -31,9 +31,9 @@ public class Swerve extends SubsystemBase {
 
         AutoBuilder.configureHolonomic(
                 this::getPose,
-                this::setPose,
+                this::resetOdometry,
                 this::getSpeeds,
-                this::driveSpeeds,
+                this::driveRobotRelative,
                 Constants.AutoConstants.pathFollowerConfig,
                 () -> {
                     // Boolean supplier that controls when the path will be mirrored for the red
@@ -80,13 +80,10 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    public void driveSpeeds(ChassisSpeeds fieldRelativeSpeeds){
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getHeading())
-        );
-        for (SwerveModule mod : mSwerveMods) {
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], true);
-        }
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.maxSpeed);
+        setModuleStates(states);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -118,7 +115,7 @@ public class Swerve extends SubsystemBase {
         return swerveOdometry.getPoseMeters();
     }
 
-    public void setPose(Pose2d pose) {
+    public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
     }
 
@@ -159,6 +156,5 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
-        System.out.println(getHeading());
     }
 }
