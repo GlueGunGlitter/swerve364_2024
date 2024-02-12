@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import frc.robot.automations.*;
+
 import frc.robot.autos.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
@@ -43,6 +45,8 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton testCmd = new JoystickButton(driver, XboxController.Button.kX.value);
+
     // private final JoystickButton IntakeEnableCommand = new JoystickButton(driver,
     // XboxController.Button.kRightBumper.value);
     /* Subsystems */
@@ -54,22 +58,22 @@ public class RobotContainer {
 
     private final SendableChooser<Command> autoChooser;
 
-    Command intake = Commands.run(() -> m_TransportationSubsystem.setSpeed(0.6, 0.6, 1));
-
-    // Command intake = Commands.run(() -> m_TransportationSubsystem.setSpeed(0.6,
-    // 0.6, 1));
-
     /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
+     * The container
+     * for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
         // Build an auto chooser. This will use Commands.none() as the default option.
-        autoChooser = AutoBuilder.buildAutoChooser();
         // Command intake = Commands.run(() -> m_TransportationSubsystem.setSpeed(0.6,
         // 0.6, 1));
 
         // Another option that allows you to specify the default auto by its name
         // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+
+        registerCommands();
+        configureButtonBindings();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         Shuffleboard.getTab("Robot")
                 .add("Sendable Title", autoChooser);
@@ -82,9 +86,7 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean()));
 
         // Configure the button bindings
-        // NamedCommands.registerCommand("intake", intake);
 
-        configureButtonBindings();
     }
 
     /**
@@ -98,7 +100,16 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        testCmd.onTrue(new enableHighShooter());
         // IntakeEnableCommand.onTrue(Commands.sequence(intake));
+    }
+
+    private void registerCommands() {
+        NamedCommands.registerCommand("HighShooter", new enableHighShooter());
+        NamedCommands.registerCommand("LowShooter", new enableLowShooter());
+        NamedCommands.registerCommand("StopShooter", new disableShooter());
+        NamedCommands.registerCommand("StartTransportation", new enableForwardTransportation());
+        NamedCommands.registerCommand("StopTransportation", new disableTransportation());
     }
 
     /**

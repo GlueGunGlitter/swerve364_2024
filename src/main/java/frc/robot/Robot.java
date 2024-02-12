@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture(); #TODO
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
@@ -137,19 +137,19 @@ public class Robot extends TimedRobot {
   }
 
   public void smartDashboard() {
-    intakeHigherMotorSpeed = Shuffleboard.getTab("Transportation").add("Higher motor speed", 0)
+    intakeHigherMotorSpeed = Shuffleboard.getTab("Transportation").add("Higher motor speed", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    intakeLowerMotorSpeed = Shuffleboard.getTab("Transportation").add("Lower motor speed", 0)
+    intakeLowerMotorSpeed = Shuffleboard.getTab("Transportation").add("Lower motor speed", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0)
+    nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0)
+    staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    transportationMotorSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor speed", 0)
+    transportationMotorSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor speed", 1)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
 
