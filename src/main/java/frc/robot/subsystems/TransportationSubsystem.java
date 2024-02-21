@@ -20,7 +20,7 @@ public class TransportationSubsystem extends SubsystemBase {
       MotorType.kBrushless);
   CANSparkFlex transportationMotor = new CANSparkFlex(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT,
       MotorType.kBrushless);
-  CANSparkFlex transportationMotor2 = new CANSparkFlex(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT,
+  CANSparkFlex transportationMotor2 = new CANSparkFlex(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_2,
       MotorType.kBrushless);
 
   /** Creates a new IntakeSubsystem. */
