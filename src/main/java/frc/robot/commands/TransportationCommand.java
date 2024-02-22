@@ -31,7 +31,7 @@ public class TransportationCommand extends Command {
       if (RobotContainer.xboxController.getRightBumperPressed()) {
         workUP = !workUP;
       }
-      if (RobotContainer.xboxController.getBackButtonPressed()) {
+      if (RobotContainer.xboxController.getXButtonPressed()) {
         workDown = !workDown;
       }
       if (workUP == true && workDown == true) {
