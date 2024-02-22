@@ -38,7 +38,7 @@ public final class Constants {
         // the ports needs to be change
         public static final int INTAKE_LOWER_MOTOR_PORT = 22;
         public static final int INTAKE_HIGHER_MOTOR_PORT = 21;
-        public static final int TRANSPORTATION_MOTOR_PORT = 32;
+        public static final int TRANSPORTATION_MOTOR_PORT = 20;
         public static final int TRANSPORTATION_MOTOR_PORT_2 = 31;
 
     }

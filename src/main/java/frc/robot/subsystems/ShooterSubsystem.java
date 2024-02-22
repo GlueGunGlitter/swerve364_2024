@@ -21,6 +21,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     nonStaticMotor.setInverted(true);
+    staticMotor.setInverted(true);
   }
 
   public void shootUp(double nonStaticMotorSpeed, double staticMotorSpeed) {

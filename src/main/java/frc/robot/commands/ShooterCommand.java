@@ -58,9 +58,9 @@ public class ShooterCommand extends Command {
 
     if (DriverStation.isTeleop()) {
       if (RobotContainer.xboxController.getAButton()) {
-        spinUp(nonStaticMotorSpeed, staticMotorSpeed);
+        RobotContainer.m_ShooterSubsystem.shootUp(nonStaticMotorSpeed, staticMotorSpeed);
       } else if (RobotContainer.xboxController.getBButton()) {
-        spinDown(nonStaticMotorSpeed - 0.2, staticMotorSpeed - 0.2);
+        RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed, staticMotorSpeed); // removed -2 from both
       } else {
         stopShooter();
       }
