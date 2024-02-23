@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -25,12 +23,12 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shootUp(double nonStaticMotorSpeed, double staticMotorSpeed) {
-    nonStaticMotor.set(-nonStaticMotorSpeed);
+    nonStaticMotor.set(nonStaticMotorSpeed);
     staticMotor.set(staticMotorSpeed);
   }
 
   public void shootDown(double nonStaticMotorSpeed, double staticMotorSpeed) {
-    nonStaticMotor.set(nonStaticMotorSpeed);
+    nonStaticMotor.set(-nonStaticMotorSpeed);
     staticMotor.set(staticMotorSpeed);
   }
 

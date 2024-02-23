@@ -18,6 +18,15 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public class ClimbConstants {
+
+        public static final int CLIMB_RIGHT_MOTOR_PORT = 51;
+        public static final int CLIMB_LEFT_MOTOR_PORT = 52;
+
+        // the ports needs to be change
+
+    }
+
     public class ShooterConstants {
 
         // the ports needs to be change
@@ -25,6 +34,8 @@ public final class Constants {
         // Might be something else for the non static as it was basiclly imposiable to
         // understand what excatly was written on it
         public static final int STATIC_MOTOR_PORT = 42;
+        public static final double MAX_SPEED_OF_NON_STATIC_MOTOR = 5000;
+        public static final double MAX_SPEED_OF_STATIC_MOTOR = 5000;
 
     }
 
@@ -38,8 +49,7 @@ public final class Constants {
         // the ports needs to be change
         public static final int INTAKE_LOWER_MOTOR_PORT = 22;
         public static final int INTAKE_HIGHER_MOTOR_PORT = 21;
-        public static final int TRANSPORTATION_MOTOR_PORT = 20;
-        public static final int TRANSPORTATION_MOTOR_PORT_2 = 31;
+        public static final int TRANSPORTATION_MOTOR_PORT = 31;
 
     }
 
@@ -183,6 +193,7 @@ public final class Constants {
         public static final double kPThetaController = 1;
 
         /* Constraint for the motion profilied robot angle controller */
+
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 

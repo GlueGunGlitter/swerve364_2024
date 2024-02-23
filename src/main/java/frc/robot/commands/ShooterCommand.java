@@ -60,7 +60,8 @@ public class ShooterCommand extends Command {
       if (RobotContainer.xboxController.getAButton()) {
         RobotContainer.m_ShooterSubsystem.shootUp(nonStaticMotorSpeed, staticMotorSpeed);
       } else if (RobotContainer.xboxController.getBButton()) {
-        RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed, staticMotorSpeed); // removed -2 from both
+        RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed - 0.2, staticMotorSpeed - 0.2); // removed -2
+                                                                                                        // from both
       } else {
         stopShooter();
       }

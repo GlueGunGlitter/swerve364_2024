@@ -24,7 +24,7 @@ public class TransportationSubsystem extends SubsystemBase {
   public TransportationSubsystem() {
     intakeHigherMotor.setInverted(true);
     intakeLowerMotor.setInverted(true);
-    transportationMotor.setInverted(true);
+    transportationMotor.setInverted(false);
   }
 
   public void setSpeed(double intakeLowerMotorSpeed, double intakeHigherMotorSpeed, double transportationMotorSpeed) {

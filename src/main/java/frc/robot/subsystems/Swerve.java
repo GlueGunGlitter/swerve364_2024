@@ -120,7 +120,9 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees() * (-1)); // The multiplacation by (-1) fixed a bug that thought the odometry was reversed.
+        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees() * (-1)); // The multiplacation by (-1) fixed
+                                                                                    // a bug that thought the odometry
+                                                                                    // was reversed.
     }
 
     public void setHeading(Rotation2d heading) {

@@ -36,6 +36,8 @@ public class Robot extends TimedRobot {
   public static GenericEntry nonStaticShooterMotorSpeed;
   public static GenericEntry staticShooterMotorSpeed;
   public static GenericEntry transportationMotorSpeed;
+  public static GenericEntry climbRightMotorSpeed;
+  public static GenericEntry climbLeftNotorSpeed;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -73,6 +75,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().schedule(RobotContainer.m_ClimbCommand);
     CommandScheduler.getInstance().schedule(RobotContainer.m_TransportationCommand);
     CommandScheduler.getInstance().schedule(RobotContainer.m_ShooterCommand);
     CommandScheduler.getInstance().run();
@@ -150,6 +153,12 @@ public class Robot extends TimedRobot {
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
     transportationMotorSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor speed", 1)
+        .withWidget(BuiltInWidgets.kTextView)
+        .getEntry();
+    climbLeftNotorSpeed = Shuffleboard.getTab("Climb").add("Climb left motor speed", 1)
+        .withWidget(BuiltInWidgets.kTextView)
+        .getEntry();
+    climbRightMotorSpeed = Shuffleboard.getTab("Climb").add("Climb right motor speed", 1)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
 

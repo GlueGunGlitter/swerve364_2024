@@ -5,7 +5,7 @@
       "x": 1.38,
       "y": 5.54
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -30,40 +30,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "StopShooter"
+            "pathName": "TwoPiece"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "StopTransportation"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "TwoPiece"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartTransportation"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "HighShooter"
+            "waitTime": 1.0
           }
         },
         {
