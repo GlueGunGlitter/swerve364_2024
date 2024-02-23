@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
   public static GenericEntry transportationMotorSpeed;
   public static GenericEntry climbRightMotorSpeed;
   public static GenericEntry climbLeftNotorSpeed;
+  public static GenericEntry isReversedZeroHeading;
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -96,7 +98,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_robotContainer.s_Swerve.zeroHeading();
+    if (isReversedZeroHeading.getBoolean(false)) {
+      m_robotContainer.s_Swerve.zeroHeadingReversed();
+    }else{
+      m_robotContainer.s_Swerve.zeroHeading();
+    }
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -160,6 +167,9 @@ public class Robot extends TimedRobot {
         .getEntry();
     climbRightMotorSpeed = Shuffleboard.getTab("Climb").add("Climb right motor speed", 1)
         .withWidget(BuiltInWidgets.kTextView)
+        .getEntry();
+    isReversedZeroHeading =  Shuffleboard.getTab("Robot").add("is reversed zero heading", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
         .getEntry();
 
   }
