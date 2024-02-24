@@ -20,8 +20,8 @@ public final class Constants {
 
     public class ClimbConstants {
 
-        public static final int CLIMB_RIGHT_MOTOR_PORT = 51;
-        public static final int CLIMB_LEFT_MOTOR_PORT = 52;
+        public static final int CLIMB_RIGHT_MOTOR_PORT = 1;
+        public static final int CLIMB_LEFT_MOTOR_PORT = 2;
 
         // the ports needs to be change
 
@@ -49,7 +49,7 @@ public final class Constants {
         // the ports needs to be change
         public static final int INTAKE_LOWER_MOTOR_PORT = 22;
         public static final int INTAKE_HIGHER_MOTOR_PORT = 21;
-        public static final int TRANSPORTATION_MOTOR_PORT = 31;
+        public static final int TRANSPORTATION_MOTOR_PORT = 32;
 
     }
 
