@@ -39,7 +39,10 @@ public class Robot extends TimedRobot {
   public static GenericEntry climbRightMotorSpeed;
   public static GenericEntry climbLeftNotorSpeed;
   public static GenericEntry isReversedZeroHeading;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -98,12 +101,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+<<<<<<< Updated upstream
     if (isReversedZeroHeading.getBoolean(false)) {
       m_robotContainer.s_Swerve.zeroHeadingReversed();
     }else{
       m_robotContainer.s_Swerve.zeroHeading();
     }
     
+=======
+    m_robotContainer.s_Swerve.zeroHeading();
+
+>>>>>>> Stashed changes
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -168,8 +176,13 @@ public class Robot extends TimedRobot {
     climbRightMotorSpeed = Shuffleboard.getTab("Climb").add("Climb right motor speed", 1)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
+<<<<<<< Updated upstream
     isReversedZeroHeading =  Shuffleboard.getTab("Robot").add("is reversed zero heading", false)
         .withWidget(BuiltInWidgets.kBooleanBox)
+=======
+    isReversedZeroHeading = Shuffleboard.getTab("Robot").add("Invert Reset Gyro", false)
+        .withWidget(BuiltInWidgets.kToggleButton)
+>>>>>>> Stashed changes
         .getEntry();
 
   }

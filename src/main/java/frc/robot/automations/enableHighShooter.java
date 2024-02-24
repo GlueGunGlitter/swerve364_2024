@@ -20,6 +20,6 @@ public class enableHighShooter extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootUp(0.4, 0.4))); // #TODO: Change the value
+        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootUp(0.8, 0.8))); // #TODO: Change the value
   }
 }

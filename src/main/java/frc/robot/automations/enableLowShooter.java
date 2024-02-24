@@ -20,6 +20,6 @@ public class enableLowShooter extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootDown(0.4, 0.4))); // #TODO: Change the value
+        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootDown(0.6, 0.6))); // #TODO: Change the value
   }
 }
