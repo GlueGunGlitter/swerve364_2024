@@ -1,5 +1,7 @@
 package frc.robot;
 
+import javax.management.ServiceNotFoundException;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.automations.*;
@@ -44,6 +47,7 @@ public class RobotContainer {
 
     /* Controllers */
     public static final XboxController xboxController = new XboxController(0);
+    public static final CommandXboxController commandXBoxController = new CommandXboxController(0);
     private final static Joystick driver = new Joystick(0);
 
     /* Drive Controls */
@@ -67,7 +71,6 @@ public class RobotContainer {
     /* Subsystems */
     public final Swerve s_Swerve = new Swerve();
     public static final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-    public static final ShooterCommand m_ShooterCommand = new ShooterCommand();
     public static final TransportationSubsystem m_TransportationSubsystem = new TransportationSubsystem();
     public static final TransportationCommand m_TransportationCommand = new TransportationCommand();
     public static final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
@@ -97,7 +100,7 @@ public class RobotContainer {
 
         registerCommands();
         configureButtonBindings();
-
+        setDefaultCommands();
         autoChooser = AutoBuilder.buildAutoChooser();
 
         Shuffleboard.getTab("Robot")
@@ -125,7 +128,13 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        commandXBoxController.a().toggleOnTrue(m_ShooterSubsystem.shootUpCommand());
+        commandXBoxController.b().toggleOnTrue(m_ShooterSubsystem.shooterDownCommand());
+    }
 
+
+    private void setDefaultCommands(){
+        m_ShooterSubsystem.setDefaultCommand(m_ShooterSubsystem.stopMotorsCommand());
     }
 
     // IntakeEnableCommand.onTrue(Commands.sequence(intake));
