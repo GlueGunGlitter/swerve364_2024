@@ -8,9 +8,9 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
 
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 public class ShooterSubsystem extends SubsystemBase {
   CANSparkFlex nonStaticMotor = new CANSparkFlex(Constants.ShooterConstants.NON_STATIC_MOTOR_PORT,
@@ -20,27 +20,26 @@ public class ShooterSubsystem extends SubsystemBase {
   private SparkPIDController nonStaticMotorPID;
   private SparkPIDController staticMotorPID;
 
-  
-
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    nonStaticMotorPID = nonStaticMotor.getPIDController();
-    staticMotorPID = staticMotor.getPIDController();
-    nonStaticMotor.setInverted(true);
+    // nonStaticMotorPID = nonStaticMotor.getPIDController();
+    // staticMotorPID = staticMotor.getPIDController();
+    nonStaticMotor.setInverted(false);
+    staticMotor.setInverted(true);
 
-    nonStaticMotorPID.setP(4);
-    nonStaticMotorPID.setI(0);
-    nonStaticMotorPID.setD(0);
+    // nonStaticMotorPID.setP(4);
+    // nonStaticMotorPID.setI(0);
+    // nonStaticMotorPID.setD(0);
 
-    staticMotorPID.setP(4);
-    staticMotorPID.setI(0);
-    staticMotorPID.setD(0);
+    // staticMotorPID.setP(4);
+    // staticMotorPID.setI(0);
+    // staticMotorPID.setD(0);
   }
 
   public void shootUp(double nonStaticMotorSpeed, double staticMotorSpeed) {
     nonStaticMotor.set(-nonStaticMotorSpeed);
     staticMotor.set(staticMotorSpeed);
-    
+
   }
 
   public void shootDown(double nonStaticMotorSpeed, double staticMotorSpeed) {
@@ -55,6 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    // System.out.println(Robot.isReversedZeroHeading.getBoolean(false));
     // This method will be called once per scheduler run
   }
 }

@@ -6,9 +6,11 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -72,8 +74,15 @@ public class RobotContainer {
     public static final ClimbCommand m_ClimbCommand = new ClimbCommand();
 
     private final SendableChooser<Command> autoChooser;
+    static private Alliance robotAlliance = Alliance.Blue;
+
+    public static Alliance getAlliance() {
+        return robotAlliance;
+    }
 
     /**
+     * q+
+     * `
      * The container
      * for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -92,7 +101,7 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser();
 
         Shuffleboard.getTab("Robot")
-                .add("Sendable Title", autoChooser);
+                .add("Auto", autoChooser);
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -127,6 +136,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("StopShooter", new disableShooter());
         NamedCommands.registerCommand("StartTransportation", new enableForwardTransportation());
         NamedCommands.registerCommand("StopTransportation", new disableTransportation());
+        NamedCommands.registerCommand("StartBackTransportation", new enableBackTransportation());
+        NamedCommands.registerCommand("StartHighSpeedTransportation", new enableForwardTransportationHighSpeed());
+
     }
 
     /**

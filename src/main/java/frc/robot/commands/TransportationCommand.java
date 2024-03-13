@@ -4,7 +4,14 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.CANifier.PWMChannel;
+
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -17,6 +24,11 @@ public class TransportationCommand extends Command {
   public TransportationCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_TransportationSubsystem);
+    // buffer = new AddressableLEDBuffer(1000);
+    // color = Color.kHotPink;
+    // channal = new AddressableLED(3);
+    // channal.start();
+
   }
 
   // Called when the command is initially scheduled.
@@ -28,8 +40,11 @@ public class TransportationCommand extends Command {
   @Override
   public void execute() {
     if (DriverStation.isTeleop()) {
+
+      // channal.setData(buffer);
       if (RobotContainer.xboxController.getRightBumperPressed()) {
         workUP = !workUP;
+        Robot.workTransportation.setBoolean(workUP);
       }
       if (RobotContainer.xboxController.getXButtonPressed()) {
         workDown = !workDown;
@@ -39,14 +54,22 @@ public class TransportationCommand extends Command {
       }
       if (workUP) {
         RobotContainer.m_TransportationSubsystem.setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
-            Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorSpeed.getDouble(0));
+            Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
+            Robot.transportationMotorTwoSpeed.getDouble(0));
+        // color = Color.kGreen;
+
       } else if (workDown) {
         RobotContainer.m_TransportationSubsystem.setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0)
             * -1,
             Robot.intakeHigherMotorSpeed.getDouble(0) * -1,
-            Robot.transportationMotorSpeed.getDouble(0) * -1);
+            Robot.transportationMotorOneSpeed.getDouble(0) * -1,
+            Robot.transportationMotorTwoSpeed.getDouble(0) * -1);
+
+        // color = Color.kAqua;
+
       } else {
         RobotContainer.m_TransportationSubsystem.stopMotors();
+
       }
     }
   }

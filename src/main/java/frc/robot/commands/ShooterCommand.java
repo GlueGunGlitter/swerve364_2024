@@ -6,7 +6,10 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
@@ -20,6 +23,7 @@ public class ShooterCommand extends Command {
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
     addRequirements(RobotContainer.m_ShooterSubsystem);
+
     // Use addRequirements() here to declare subsystem dependencies.
 
   }
@@ -27,14 +31,6 @@ public class ShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  }
-
-  public void spinUp(double nonStaticMotorSpeed, double staticMotorSpeed) {
-    RobotContainer.m_ShooterSubsystem.shootUp(nonStaticMotorSpeed, staticMotorSpeed);
-  }
-
-  public void spinDown(double nonStaticMotorSpeed, double staticMotorSpeed) {
-    RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed - 0.2, staticMotorSpeed - 0.2);
   }
 
   public void stopShooter() {
@@ -60,7 +56,7 @@ public class ShooterCommand extends Command {
       if (RobotContainer.xboxController.getAButton()) {
         RobotContainer.m_ShooterSubsystem.shootUp(nonStaticMotorSpeed, staticMotorSpeed);
       } else if (RobotContainer.xboxController.getBButton()) {
-        RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed - 0.2, staticMotorSpeed - 0.2); // removed -2
+        RobotContainer.m_ShooterSubsystem.shootDown(nonStaticMotorSpeed - 0.4, staticMotorSpeed - 0.5); // removed -2
                                                                                                         // from both
       } else {
         stopShooter();

@@ -14,16 +14,16 @@ import frc.robot.subsystems.ShooterSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class enableForwardTransportation extends SequentialCommandGroup {
+public class enableForwardTransportationHighSpeed extends SequentialCommandGroup {
   /** Creates a new autoCommand. */
-  public enableForwardTransportation() {
+  public enableForwardTransportationHighSpeed() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.setSpeed(0.7, 0.7, 0.5, 0.5))); // #TODO://up
-                                                                                                          // 0.7
-                                                                                                          // transpotation
-                                                                                                          // Change
+        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.setSpeed(0, 0, 1, 1))); // #TODO://up
+                                                                                                  // 0.7
+                                                                                                  // transpotation
+                                                                                                  // Change
     // the value
   }
 }

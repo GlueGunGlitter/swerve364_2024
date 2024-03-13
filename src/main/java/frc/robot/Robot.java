@@ -7,7 +7,11 @@ package frc.robot;
 import javax.swing.RootPaneContainer;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,14 +39,15 @@ public class Robot extends TimedRobot {
   public static GenericEntry intakeLowerMotorSpeed;
   public static GenericEntry nonStaticShooterMotorSpeed;
   public static GenericEntry staticShooterMotorSpeed;
-  public static GenericEntry transportationMotorSpeed;
+  public static GenericEntry transportationMotorOneSpeed;
+  public static GenericEntry transportationMotorTwoSpeed;
+  public static GenericEntry workTransportation;
   public static GenericEntry climbRightMotorSpeed;
   public static GenericEntry climbLeftNotorSpeed;
   public static GenericEntry isReversedZeroHeading;
-<<<<<<< Updated upstream
+  public static GenericEntry deg60Heading;
 
-=======
->>>>>>> Stashed changes
+  public AddressableLED m_led;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -51,13 +56,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    CameraServer.startAutomaticCapture();
 
-    // CameraServer.startAutomaticCapture(); #TODO
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
     smartDashboard();
     m_robotContainer = new RobotContainer();
+
   }
 
   /**
@@ -101,17 +107,21 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-<<<<<<< Updated upstream
-    if (isReversedZeroHeading.getBoolean(false)) {
-      m_robotContainer.s_Swerve.zeroHeadingReversed();
-    }else{
-      m_robotContainer.s_Swerve.zeroHeading();
-    }
-    
-=======
-    m_robotContainer.s_Swerve.zeroHeading();
-
->>>>>>> Stashed changes
+    // DriverStation.reportWarning("", false);
+    // System.out.println(m_robotContainer.s_Swerve.getHeading());
+    // m_robotContainer.s_Swerve.zeroHeading();
+    // m_robotContainer.s_Swerve
+    // .setHeading(Rotation2d.fromDegrees(m_robotContainer.s_Swerve.getHeading().getDegrees()
+    // + 180));
+    /*
+     * 
+     * if (isReversedZeroHeading.getBoolean(false)) {
+     * m_robotContainer.s_Swerve.zeroHeadingReversed();
+     * }
+     * else {
+     * m_robotContainer.s_Swerve.zeroHeading();
+     * }
+     */
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -127,7 +137,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -161,13 +170,16 @@ public class Robot extends TimedRobot {
     intakeLowerMotorSpeed = Shuffleboard.getTab("Transportation").add("Lower motor speed", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0.7)
+    nonStaticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Non static motor speed (votex)", 0.8)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0.7)
+    staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0.8)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    transportationMotorSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor speed", 1)
+    transportationMotorOneSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor one speed", 0.5)
+        .withWidget(BuiltInWidgets.kTextView)
+        .getEntry();
+    transportationMotorTwoSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor two speed", 0.5)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
     climbLeftNotorSpeed = Shuffleboard.getTab("Climb").add("Climb left motor speed", 1)
@@ -176,14 +188,19 @@ public class Robot extends TimedRobot {
     climbRightMotorSpeed = Shuffleboard.getTab("Climb").add("Climb right motor speed", 1)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-<<<<<<< Updated upstream
-    isReversedZeroHeading =  Shuffleboard.getTab("Robot").add("is reversed zero heading", false)
-        .withWidget(BuiltInWidgets.kBooleanBox)
-=======
-    isReversedZeroHeading = Shuffleboard.getTab("Robot").add("Invert Reset Gyro", false)
+    isReversedZeroHeading = Shuffleboard.getTab("Robot").add("is reversed zero heading", false)
         .withWidget(BuiltInWidgets.kToggleButton)
->>>>>>> Stashed changes
         .getEntry();
+    deg60Heading = Shuffleboard.getTab("Robot").add("is 60 deg heading", false)
+        .withWidget(BuiltInWidgets.kToggleButton)
+        .getEntry();
+    workTransportation = Shuffleboard.getTab("Robot").add("transportation working", false)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .getEntry();
+    // reverseTranspotation = Shuffleboard.getTab("Robot").add("reverse
+    // transportation working", false)
+    // .withWidget(BuiltInWidgets.kBooleanBox)
+    // .getEntry();
 
   }
 }

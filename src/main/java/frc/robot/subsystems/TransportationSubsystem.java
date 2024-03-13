@@ -9,38 +9,74 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class TransportationSubsystem extends SubsystemBase {
   CANSparkFlex intakeHigherMotor = new CANSparkFlex(Constants.TransportationConstants.INTAKE_HIGHER_MOTOR_PORT,
       MotorType.kBrushless);
   CANSparkFlex intakeLowerMotor = new CANSparkFlex(Constants.TransportationConstants.INTAKE_LOWER_MOTOR_PORT,
       MotorType.kBrushless);
-  WPI_TalonSRX transportationMotor = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT);
+  WPI_TalonSRX transportationMotor1 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_ONE);
+  WPI_TalonSRX transportationMotor2 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_TWO);
+
+  // AddressableLED m_led = new AddressableLED(3);
+
+  // // Reuse buffer
+  // // Default to a length of 60, start empty output
+  // // Length is expensive to set, so only set it once, then just update data
+  // AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
 
   /** Creates a new IntakeSubsystem. */
   public TransportationSubsystem() {
     intakeHigherMotor.setInverted(true);
     intakeLowerMotor.setInverted(true);
-    transportationMotor.setInverted(false);
+    transportationMotor1.setInverted(true);
+    transportationMotor2.setInverted(true);
+    transportationMotor1.configContinuousCurrentLimit(30);
+    transportationMotor2.configContinuousCurrentLimit(30);
+
+    // m_led.setLength(m_ledBuffer.getLength());
+    // m_led.setData(m_ledBuffer);
+    // m_led.start();
   }
 
-  public void setSpeed(double intakeLowerMotorSpeed, double intakeHigherMotorSpeed, double transportationMotorSpeed) {
+  public void setSpeed(double intakeLowerMotorSpeed, double intakeHigherMotorSpeed, double transportationMotorOneSpeed,
+      double transportationMotorTwoSpeed) {
     intakeHigherMotor.set(intakeHigherMotorSpeed);
     intakeLowerMotor.set(intakeLowerMotorSpeed);
-    transportationMotor.set(transportationMotorSpeed);
+    transportationMotor1.set(transportationMotorOneSpeed);
+    transportationMotor2.set(transportationMotorTwoSpeed);
+    // for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+
+    // m_ledBuffer.setRGB(i, 255, 0, 0);
+    // }
+    // m_led.setData(m_ledBuffer);
+
   }
 
   public void stopMotors() {
     intakeHigherMotor.set(0);
     intakeLowerMotor.set(0);
-    transportationMotor.set(0);
+    transportationMotor1.set(0);
+    transportationMotor2.set(0);
+
+    // for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+
+    // m_ledBuffer.setRGB(i, 0, 255, 0);
+    // }
+    // m_led.setData(m_ledBuffer);
   }
 
   @Override
   public void periodic() {
+
     // This method will be called once per scheduler run
   }
 }

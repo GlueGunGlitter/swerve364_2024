@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -117,6 +118,8 @@ public class Swerve extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
+        DriverStation.reportWarning(RobotContainer.getAlliance().name(), false);
+
     }
 
     public Rotation2d getHeading() {
@@ -134,14 +137,9 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
-    public void zeroHeadingReversed() {
-        swerveOdometry.resetPosition(Rotation2d.fromDegrees(getGyroYaw().getDegrees()*1), getModulePositions(),
-                new Pose2d(getPose().getTranslation(), new Rotation2d()));
-    }
-
 
     public void zeroHeadingReversed() {
-        swerveOdometry.resetPosition(Rotation2d.fromDegrees(getGyroYaw().getDegrees() * (-1)), getModulePositions(),
+        swerveOdometry.resetPosition(Rotation2d.fromDegrees(getGyroYaw().getDegrees() + 180), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 

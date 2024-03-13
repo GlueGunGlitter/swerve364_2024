@@ -9,8 +9,6 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class ClimbCommand extends Command {
-  boolean climbLeft = false;
-  boolean climbRight = false;
 
   /** Creates a new ClimbCommand. */
   public ClimbCommand() {
@@ -26,12 +24,8 @@ public class ClimbCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.xboxController.getRightTriggerAxis() > 0.4) {
-      RobotContainer.m_ClimbSubsystem.setSpeed(Robot.climbRightMotorSpeed.getDouble(0),
-          Robot.climbLeftNotorSpeed.getDouble(0));
-    } else {
-      RobotContainer.m_ClimbSubsystem.stopMotor();
-    }
+    RobotContainer.m_ClimbSubsystem.setSpeed(-RobotContainer.xboxController.getRightTriggerAxis(),
+        RobotContainer.xboxController.getRightTriggerAxis());
   }
 
   // Called once the command ends or is interrupted.

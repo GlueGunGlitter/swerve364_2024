@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,11 +18,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
+    climbLeftMotor.configContinuousCurrentLimit(30);
+    climbRightMotor.configContinuousCurrentLimit(30);
   }
 
-  public void setSpeed(double climbRightMotorSpeed, double climbLeftMotorSpeed) {
+  public void setSpeed(double climbRightMotorSpeed, double climbleftMotorSpeed) {
     climbRightMotor.set(climbRightMotorSpeed);
-    climbLeftMotor.set(climbLeftMotorSpeed);
+    climbLeftMotor.set(climbleftMotorSpeed);
   }
 
   public void stopMotor() {
