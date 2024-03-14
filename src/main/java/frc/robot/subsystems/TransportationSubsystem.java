@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -72,6 +73,23 @@ public class TransportationSubsystem extends SubsystemBase {
     // m_ledBuffer.setRGB(i, 0, 255, 0);
     // }
     // m_led.setData(m_ledBuffer);
+  }
+
+  public Command transportDownCommand() {
+    return new RunCommand(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0) * -1,
+        Robot.intakeHigherMotorSpeed.getDouble(0) * -1,
+        Robot.transportationMotorOneSpeed.getDouble(0) * -1,
+        Robot.transportationMotorTwoSpeed.getDouble(0) * -1), this);
+  }
+
+  public Command transportUpCommand() {
+    return new RunCommand(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
+        Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
+        Robot.transportationMotorTwoSpeed.getDouble(0)), this);
+  }
+
+  public Command stopMotorsCommand() {
+        return new RunCommand(this::stopMotors, this);
   }
 
   @Override

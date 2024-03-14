@@ -71,6 +71,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return new RunCommand(() -> shootUp(staticMotorSpeed-0.4, nonStaticSpeed-0.5), this).withTimeout(0.5);
   }
 
+  public Command stopMotorsCommand(){
+    return new RunCommand( this::stopMotors, this); 
+  }
+
 
   @Override
   public void periodic() {

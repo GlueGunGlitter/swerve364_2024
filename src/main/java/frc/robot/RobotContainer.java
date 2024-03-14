@@ -72,9 +72,7 @@ public class RobotContainer {
     public final Swerve s_Swerve = new Swerve();
     public static final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
     public static final TransportationSubsystem m_TransportationSubsystem = new TransportationSubsystem();
-    public static final TransportationCommand m_TransportationCommand = new TransportationCommand();
     public static final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
-    public static final ClimbCommand m_ClimbCommand = new ClimbCommand();
 
     private final SendableChooser<Command> autoChooser;
     static private Alliance robotAlliance = Alliance.Blue;
@@ -128,14 +126,28 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+
+        // Shooter Triggers
         commandXBoxController.a().toggleOnTrue(m_ShooterSubsystem.shootUpCommand());
         commandXBoxController.b().toggleOnTrue(m_ShooterSubsystem.shooterDownCommand());
-        //  commandXBoxController.x().toggleOnTrue(new turnToAngle);
+
+        // Transportation Triggers
+        commandXBoxController.rightBumper().toggleOnTrue(m_TransportationSubsystem.transportUpCommand());
+        commandXBoxController.leftBumper().toggleOnTrue(m_TransportationSubsystem.transportDownCommand());
+
+        // Climb Triggers
+        commandXBoxController.rightTrigger()
+                .onTrue(m_ClimbSubsystem.setSpeedCommand(-RobotContainer.xboxController.getRightTriggerAxis(),
+                        RobotContainer.xboxController.getRightTriggerAxis()));
+
+        // Utilities
+        commandXBoxController.leftBumper().toggleOnTrue(new TurnToAngle(s_Swerve));
     }
 
-
-    private void setDefaultCommands(){
+    private void setDefaultCommands() {
         m_ShooterSubsystem.setDefaultCommand(m_ShooterSubsystem.stopMotorsCommand());
+        m_TransportationSubsystem.setDefaultCommand(m_TransportationSubsystem.stopMotorsCommand());
+        m_ClimbSubsystem.setDefaultCommand(m_ClimbSubsystem.stopMotorsCommand());
     }
 
     // IntakeEnableCommand.onTrue(Commands.sequence(intake));
