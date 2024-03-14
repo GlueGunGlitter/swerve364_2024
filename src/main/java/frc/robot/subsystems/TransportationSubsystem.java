@@ -76,20 +76,20 @@ public class TransportationSubsystem extends SubsystemBase {
   }
 
   public Command transportDownCommand() {
-    return new RunCommand(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0) * -1,
+    return this.run(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0) * -1,
         Robot.intakeHigherMotorSpeed.getDouble(0) * -1,
         Robot.transportationMotorOneSpeed.getDouble(0) * -1,
-        Robot.transportationMotorTwoSpeed.getDouble(0) * -1), this);
+        Robot.transportationMotorTwoSpeed.getDouble(0) * -1));
   }
 
   public Command transportUpCommand() {
-    return new RunCommand(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
+    return this.run(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
         Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
-        Robot.transportationMotorTwoSpeed.getDouble(0)), this);
+        Robot.transportationMotorTwoSpeed.getDouble(0)));
   }
 
   public Command stopMotorsCommand() {
-        return new RunCommand(this::stopMotors, this);
+    return this.run(this::stopMotors);
   }
 
   @Override

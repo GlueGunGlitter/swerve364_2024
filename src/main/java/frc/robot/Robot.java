@@ -4,14 +4,9 @@
 
 package frc.robot;
 
-import javax.swing.RootPaneContainer;
-
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -86,9 +81,7 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods. This must be called from the
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().schedule(RobotContainer.m_ClimbCommand);
-    CommandScheduler.getInstance().schedule(RobotContainer.m_TransportationCommand);
-    CommandScheduler.getInstance().schedule(RobotContainer.m_ShooterCommand);
+
     CommandScheduler.getInstance().run();
   }
 

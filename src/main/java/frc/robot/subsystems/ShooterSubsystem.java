@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
   CANSparkFlex nonStaticMotor = new CANSparkFlex(Constants.ShooterConstants.NON_STATIC_MOTOR_PORT,
@@ -25,8 +26,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public double nonStaticSpeed;
   public double staticMotorSpeed;
 
-
-
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
     // nonStaticMotorPID = nonStaticMotor.getPIDController();
@@ -34,9 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
     nonStaticMotor.setInverted(false);
     staticMotor.setInverted(true);
 
-    staticMotorSpeed=0;
-    nonStaticSpeed=0;
-
+    staticMotorSpeed = 0;
+    nonStaticSpeed = 0;
 
     // nonStaticMotorPID.setP(4);
     // nonStaticMotorPID.setI(0);
@@ -63,18 +61,20 @@ public class ShooterSubsystem extends SubsystemBase {
     staticMotor.stopMotor();
   }
 
-  public Command shootUpCommand(){
-    return new RunCommand(() -> shootUp(staticMotorSpeed, nonStaticSpeed), this).withTimeout(0.5);
+  public Command shootUpCommand() {
+
+    return this.run(() -> shootUp(staticMotorSpeed, nonStaticSpeed))
+        .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
   }
 
-  public Command shooterDownCommand(){
-    return new RunCommand(() -> shootUp(staticMotorSpeed-0.4, nonStaticSpeed-0.5), this).withTimeout(0.5);
+  public Command shooterDownCommand() {
+    return this.run(() -> shootUp(staticMotorSpeed - 0.4, nonStaticSpeed - 0.5))
+        .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
   }
 
-  public Command stopMotorsCommand(){
-    return new RunCommand( this::stopMotors, this); 
+  public Command stopMotorsCommand() {
+    return this.run(this::stopMotors);
   }
-
 
   @Override
   public void periodic() {

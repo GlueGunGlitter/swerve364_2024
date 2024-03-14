@@ -34,14 +34,13 @@ public class ClimbSubsystem extends SubsystemBase {
     climbRightMotor.set(0);
   }
 
-  public Command setSpeedCommand(double climbRightMotorSpeed, double climbleftMotorSpeed){
-    return new RunCommand( () -> setSpeed(climbRightMotorSpeed, climbleftMotorSpeed), this);
+  public Command setSpeedCommand(double climbRightMotorSpeed, double climbleftMotorSpeed) {
+    return this.run(() -> setSpeed(climbRightMotorSpeed, climbleftMotorSpeed));
   }
 
-  public Command stopMotorsCommand(){
-    return new RunCommand( () -> stopMotor(), this);
+  public Command stopMotorsCommand() {
+    return this.run(() -> stopMotor());
   }
-
 
   @Override
   public void periodic() {

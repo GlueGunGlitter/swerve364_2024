@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -37,6 +36,7 @@ public final class Constants {
         public static final double MAX_SPEED_OF_NON_STATIC_MOTOR = 5000;
         public static final double MAX_SPEED_OF_STATIC_MOTOR = 5000;
 
+        public static final double SHOOT_TIMEOUT = 1.0;
     }
 
     // public class ConveyorConstants {

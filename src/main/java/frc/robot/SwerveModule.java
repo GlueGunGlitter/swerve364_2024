@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -33,11 +35,14 @@ public class SwerveModule {
     private final PositionVoltage anglePosition = new PositionVoltage(0);
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants) {
+        this(moduleNumber, moduleConstants, false, false);
+    }
+
+    public SwerveModule(
+            int moduleNumber, SwerveModuleConstants moduleConstants,
+            boolean angleInverted, boolean driveiInverted) {
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
-
-
-        
 
         /* Angle Encoder Config */
         angleEncoder = new CANcoder(moduleConstants.cancoderID);
@@ -46,12 +51,16 @@ public class SwerveModule {
         /* Angle Motor Config */
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
         mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
+        if (angleInverted)
+            invertMotor(mAngleMotor);
         resetToAbsolute();
-    
+
         /* Drive Motor Config */
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
         mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
+        if (driveiInverted)
+            invertMotor(mDriveMotor);
     }
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
@@ -92,5 +101,16 @@ public class SwerveModule {
                 Conversions.rotationsToMeters(mDriveMotor.getPosition().getValue(),
                         Constants.Swerve.wheelCircumference),
                 Rotation2d.fromRotations(mAngleMotor.getPosition().getValue()));
+    }
+
+    private void invertMotor(TalonFX motor) {
+        var config = new MotorOutputConfigs();
+        motor.getConfigurator().refresh(config);
+        if (config.Inverted == InvertedValue.Clockwise_Positive) {
+            config.Inverted = InvertedValue.CounterClockwise_Positive;
+        } else {
+            config.Inverted = InvertedValue.Clockwise_Positive;
+        }
+        motor.getConfigurator().apply(config);
     }
 }
