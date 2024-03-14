@@ -50,21 +50,7 @@ public class SwerveModule {
     
         /* Drive Motor Config */
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID);
-        if (moduleNumber==3){
-                    Robot.ctreConfigs.swerveDriveFXConfig.MotorOutput.Inverted= InvertedValue.Clockwise_Positive;
-                    //        Robot.ctreConfigs.swerveDriveFXConfig.MotorOutput.Inverted= InvertedValue.CounterClockwise_Positive;
-                    mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
-
-        }
-        else {
-            mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
-        }
-
-        Robot.ctreConfigs.swerveDriveFXConfig.MotorOutput.Inverted= Constants.Swerve.driveMotorInvert;
-
-
-
-
+        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
     }
 
