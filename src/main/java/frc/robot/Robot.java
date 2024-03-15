@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AddressableLED;
@@ -195,5 +197,19 @@ public class Robot extends TimedRobot {
     // .withWidget(BuiltInWidgets.kBooleanBox)
     // .getEntry();
 
+  }
+
+  public static final PhotonCamera notesCamera = new PhotonCamera("Notes-Limelight");
+
+  public static double getRobotToNoteYaw() {
+    var result = notesCamera.getLatestResult();
+    if (!result.hasTargets())
+      return 0.0;
+    else
+      return result.getBestTarget().getYaw();
+  }
+
+  public static boolean seesNote() {
+    return notesCamera.getLatestResult().hasTargets();
   }
 }

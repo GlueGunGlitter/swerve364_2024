@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.automations.*;
-import frc.robot.automations.driveAutomizations.TurnToAngle;
+import frc.robot.automations.driveAutomizations.TurnToAngleWhileDriving;
 import frc.robot.commands.driveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -89,16 +89,6 @@ public class RobotContainer {
 
         Shuffleboard.getTab("Robot")
                 .add("Auto", autoChooser);
-        s_Swerve.setDefaultCommand(
-                new TeleopSwerve(
-                        s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis),
-                        () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()));
-
-        // Configure the button bindings
-
     }
 
     /**
@@ -118,8 +108,18 @@ public class RobotContainer {
         commandXBoxController.b().toggleOnTrue(m_ShooterSubsystem.shooterDownCommand());
 
         // Transportation Triggers
-        commandXBoxController.rightBumper().toggleOnTrue(m_TransportationSubsystem.transportUpCommand());
-        commandXBoxController.leftBumper().toggleOnTrue(m_TransportationSubsystem.transportDownCommand());
+        commandXBoxController.rightBumper()
+                .toggleOnTrue(
+                        m_TransportationSubsystem.transportUpCommand()
+                                .alongWith(
+                                        new TurnToAngleWhileDriving(
+                                                s_Swerve,
+                                                () -> Robot.getRobotToNoteYaw() + s_Swerve.getHeading().getDegrees(),
+                                                () -> -driver.getRawAxis(translationAxis),
+                                                () -> -driver.getRawAxis(strafeAxis),
+                                                () -> -driver.getRawAxis(rotationAxis))));
+
+        commandXBoxController.x().toggleOnTrue(m_TransportationSubsystem.transportDownCommand());
 
         // Climb Triggers
         commandXBoxController.rightTrigger()
@@ -127,10 +127,16 @@ public class RobotContainer {
                         RobotContainer.xboxController.getRightTriggerAxis()));
 
         // Utilities
-        commandXBoxController.leftBumper().toggleOnTrue(new TurnToAngle(s_Swerve));
     }
 
     private void setDefaultCommands() {
+        s_Swerve.setDefaultCommand(
+                new TeleopSwerve(
+                        s_Swerve,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> robotCentric.getAsBoolean()));
         m_ShooterSubsystem.setDefaultCommand(m_ShooterSubsystem.stopMotorsCommand());
         m_TransportationSubsystem.setDefaultCommand(m_TransportationSubsystem.stopMotorsCommand());
         m_ClimbSubsystem.setDefaultCommand(m_ClimbSubsystem.stopMotorsCommand());

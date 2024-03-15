@@ -68,7 +68,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command shooterDownCommand() {
-    return this.run(() -> shootUp(staticMotorSpeed - 0.4, nonStaticSpeed - 0.5))
+    return this.run(() -> shootDown(staticMotorSpeed - 0.4, nonStaticSpeed - 0.5))
         .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
   }
 
