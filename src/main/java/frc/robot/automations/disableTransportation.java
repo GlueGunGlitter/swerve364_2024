@@ -15,9 +15,12 @@ public class disableTransportation extends SequentialCommandGroup {
   /** Creates a new autoCommand. */
   public disableTransportation() {
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    // addCommands(new FooCommand0+(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.stopMotors())); // #TODO: Change
-                                                                                          // the value
+        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.setSpeed(0, 0, 0, 0))); // #TODO://up
+                                                                                                  // 0.7
+                                                                                                  // transpotation
+                                                                                                  // Change
+    // the value
   }
 }

@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.automations.*;
+import frc.robot.automations.driveAutomizations.Test;
 import frc.robot.automations.driveAutomizations.TurnToAngleWhileDriving;
 import frc.robot.commands.driveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
@@ -110,15 +112,19 @@ public class RobotContainer {
         // Transportation Triggers
         commandXBoxController.rightBumper()
                 .toggleOnTrue(
-                        m_TransportationSubsystem.transportUpCommand()
-                                .alongWith(
-                                        new TurnToAngleWhileDriving(
-                                                s_Swerve,
-                                                () -> Robot.getRobotToNoteYaw() + s_Swerve.getHeading().getDegrees(),
-                                                () -> -driver.getRawAxis(translationAxis),
-                                                () -> -driver.getRawAxis(strafeAxis),
-                                                () -> -driver.getRawAxis(rotationAxis))));
-
+                        m_TransportationSubsystem.transportUpCommand().alongWith(new Test(s_Swerve,
+                                () -> -driver.getRawAxis(translationAxis),
+                                () -> -driver.getRawAxis(strafeAxis),
+                                () -> -driver.getRawAxis(rotationAxis))));
+        /*
+         * .alongWith(
+         * new TurnToAngleWhileDriving(
+         * s_Swerve,
+         * () -> Robot.getRobotToNoteYaw() + s_Swerve.getHeading().getDegrees(),
+         * () -> -driver.getRawAxis(translationAxis),
+         * () -> -driver.getRawAxis(strafeAxis),
+         * () -> -driver.getRawAxis(rotationAxis))));
+         */
         commandXBoxController.x().toggleOnTrue(m_TransportationSubsystem.transportDownCommand());
 
         // Climb Triggers

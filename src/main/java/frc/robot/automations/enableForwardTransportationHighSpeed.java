@@ -15,12 +15,12 @@ public class enableForwardTransportationHighSpeed extends SequentialCommandGroup
   /** Creates a new autoCommand. */
   public enableForwardTransportationHighSpeed() {
     // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    // addCommands(new FooCommand0+(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.setSpeed(0, 0, 1, 1))); // #TODO://up
-                                                                                                  // 0.7
-                                                                                                  // transpotation
-                                                                                                  // Change
+        new InstantCommand(() -> RobotContainer.m_TransportationSubsystem.setSpeed(0, 0, 0.9, 0.9))); // #TODO://up
+                                                                                                      // 0.7
+                                                                                                      // transpotation
+                                                                                                      // Change
     // the value
   }
 }

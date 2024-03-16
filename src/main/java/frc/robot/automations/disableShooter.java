@@ -17,6 +17,7 @@ public class disableShooter extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.stopMotors()));
+        new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootUp(0, 0))); // #TODO: Change the
+    // value
   }
 }
