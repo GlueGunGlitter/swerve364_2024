@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,7 +63,6 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command shootUpCommand() {
-
     return this.run(() -> shootUp(staticMotorSpeed, nonStaticSpeed))
         .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
   }
@@ -78,9 +78,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    staticMotorSpeed = Robot.staticShooterMotorSpeed.getDouble(0);
     nonStaticSpeed = Robot.nonStaticShooterMotorSpeed.getDouble(0);
-    // System.out.println(Robot.isReversedZeroHeading.getBoolean(false));
-    // This method will be called once per scheduler run
+
   }
 }

@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,8 +32,6 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    public static double translationVal;
-    public static double strafeVal;
 
     /* Controllers */
     public static final XboxController xboxController = new XboxController(0);
@@ -77,6 +77,13 @@ public class RobotContainer {
      */
     public RobotContainer() {
 
+        NamedCommands.registerCommand("HighShooter", new enableHighShooter());
+        NamedCommands.registerCommand("LowShooter", new enableLowShooter());
+        NamedCommands.registerCommand("StopShooter", new disableShooter());
+        NamedCommands.registerCommand("StartTransportation", new enableForwardTransportation());
+        NamedCommands.registerCommand("StopTransportation", new disableTransportation());
+        NamedCommands.registerCommand("StartBackTransportation", new enableBackTransportation());
+        NamedCommands.registerCommand("StartHighSpeedTransportation", new enableForwardTransportationHighSpeed());
         // Build an auto chooser. This will use Commands.none() as the default option.
         // Command intake = Commands.run(() -> m_TransportationSubsystem.setSpeed(0.6,
         // 0.6, 1));
@@ -84,7 +91,6 @@ public class RobotContainer {
         // Another option that allows you to specify the default auto by its name
         // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-        registerCommands();
         configureButtonBindings();
         setDefaultCommands();
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -146,20 +152,10 @@ public class RobotContainer {
         m_ShooterSubsystem.setDefaultCommand(m_ShooterSubsystem.stopMotorsCommand());
         m_TransportationSubsystem.setDefaultCommand(m_TransportationSubsystem.stopMotorsCommand());
         m_ClimbSubsystem.setDefaultCommand(m_ClimbSubsystem.stopMotorsCommand());
+
     }
 
     // IntakeEnableCommand.onTrue(Commands.sequence(intake));
-
-    private void registerCommands() {
-        NamedCommands.registerCommand("HighShooter", new enableHighShooter());
-        NamedCommands.registerCommand("LowShooter", new enableLowShooter());
-        NamedCommands.registerCommand("StopShooter", new disableShooter());
-        NamedCommands.registerCommand("StartTransportation", new enableForwardTransportation());
-        NamedCommands.registerCommand("StopTransportation", new disableTransportation());
-        NamedCommands.registerCommand("StartBackTransportation", new enableBackTransportation());
-        NamedCommands.registerCommand("StartHighSpeedTransportation", new enableForwardTransportationHighSpeed());
-
-    }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
