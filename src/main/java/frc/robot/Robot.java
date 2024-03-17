@@ -102,21 +102,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    // DriverStation.reportWarning("", false);
-    // System.out.println(m_robotContainer.s_Swerve.getHeading());
-    // m_robotContainer.s_Swerve.zeroHeading();
-    // m_robotContainer.s_Swerve
-    // .setHeading(Rotation2d.fromDegrees(m_robotContainer.s_Swerve.getHeading().getDegrees()
-    // + 180));
-    /*
-     * 
-     * if (isReversedZeroHeading.getBoolean(false)) {
-     * m_robotContainer.s_Swerve.zeroHeadingReversed();
-     * }
-     * else {
-     * m_robotContainer.s_Swerve.zeroHeading();
-     * }
-     */
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

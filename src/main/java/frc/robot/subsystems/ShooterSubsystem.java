@@ -6,15 +6,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkPIDController;
-
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -22,8 +17,7 @@ public class ShooterSubsystem extends SubsystemBase {
       MotorType.kBrushless);
   CANSparkFlex staticMotor = new CANSparkFlex(Constants.ShooterConstants.STATIC_MOTOR_PORT,
       MotorType.kBrushless);
-  private SparkPIDController nonStaticMotorPID;
-  private SparkPIDController staticMotorPID;
+
   public double nonStaticSpeed;
   public double staticMotorSpeed;
 
@@ -62,6 +56,14 @@ public class ShooterSubsystem extends SubsystemBase {
     staticMotor.stopMotor();
   }
 
+  public Command shootUpAotoCommand() {
+    return this.run(() -> shootUp(0.8, 0.8));
+  }
+
+  public Command shootDownAotoCommand() {
+    return this.run(() -> shootUp(0.4, 0.4));
+  }
+
   public Command shootUpCommand() {
     return this.run(() -> shootUp(staticMotorSpeed, nonStaticSpeed))
         .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
@@ -79,6 +81,6 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     nonStaticSpeed = Robot.nonStaticShooterMotorSpeed.getDouble(0);
-
+    staticMotorSpeed = Robot.staticShooterMotorSpeed.getDouble(0);
   }
 }

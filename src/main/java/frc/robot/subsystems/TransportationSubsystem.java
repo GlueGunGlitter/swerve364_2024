@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -68,6 +67,18 @@ public class TransportationSubsystem extends SubsystemBase {
     // m_ledBuffer.setRGB(i, 0, 255, 0);
     // }
     // m_led.setData(m_ledBuffer);
+  }
+
+  public Command transportUpAotoCommand() {
+    return this.run(() -> setSpeed(0, 0, 0.9, 0.9));
+  }
+
+  public Command transportDowmAotoCommand() {
+    return this.run(() -> setSpeed(0, 0, -0.5, -0.5));
+  }
+
+  public Command transportUpHighSpeedAotoCommand() {
+    return this.run(() -> setSpeed(0.7, 0.7, 0.9, 0.9));
   }
 
   public Command transportDownCommand() {

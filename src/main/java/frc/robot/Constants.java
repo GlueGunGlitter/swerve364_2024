@@ -36,7 +36,7 @@ public final class Constants {
         public static final double MAX_SPEED_OF_NON_STATIC_MOTOR = 5000;
         public static final double MAX_SPEED_OF_STATIC_MOTOR = 5000;
 
-        public static final double SHOOT_TIMEOUT = 3;
+        public static final double SHOOT_TIMEOUT = 1.5;
     }
 
     // public class ConveyorConstants {
