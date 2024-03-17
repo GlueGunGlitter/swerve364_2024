@@ -145,6 +145,11 @@ public class RobotContainer {
                                 m_TransportationSubsystem.transportDowmAotoCommand());
                 NamedCommands.registerCommand("StartHighSpeedTransportation",
                                 m_TransportationSubsystem.transportUpHighSpeedAotoCommand());
+                NamedCommands.registerCommand("AotoAimAssist", new AimAssist(
+                                s_Swerve,
+                                () -> -driver.getRawAxis(translationAxis),
+                                () -> -driver.getRawAxis(strafeAxis),
+                                () -> -driver.getRawAxis(rotationAxis)));
         }
 
         /**

@@ -5,11 +5,14 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+
+import java.util.Optional;
 
 import com.kauailabs.navx.frc.AHRS;
 
@@ -29,6 +32,9 @@ public class Swerve extends SubsystemBase {
     private final AHRS gyro;
 
     public Swerve() {
+
+        PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+
         AutoBuilder.configureHolonomic(
                 this::getPose,
                 this::resetOdometry,
@@ -113,6 +119,10 @@ public class Swerve extends SubsystemBase {
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
+    }
+
+    public Optional<Rotation2d> getRotationTargetOverride() {
+        return Optional.of(getHeading());
     }
 
     public void resetOdometry(Pose2d pose) {

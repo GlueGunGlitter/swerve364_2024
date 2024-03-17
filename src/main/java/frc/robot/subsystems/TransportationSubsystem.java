@@ -48,11 +48,6 @@ public class TransportationSubsystem extends SubsystemBase {
     intakeLowerMotor.set(intakeLowerMotorSpeed);
     transportationMotor1.set(transportationMotorOneSpeed);
     transportationMotor2.set(transportationMotorTwoSpeed);
-    // for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-
-    // m_ledBuffer.setRGB(i, 255, 0, 0);
-    // }
-    // m_led.setData(m_ledBuffer);
 
   }
 
