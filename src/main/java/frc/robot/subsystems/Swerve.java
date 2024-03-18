@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -32,9 +33,6 @@ public class Swerve extends SubsystemBase {
     private final AHRS gyro;
 
     public Swerve() {
-
-        PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
-
         AutoBuilder.configureHolonomic(
                 this::getPose,
                 this::resetOdometry,
@@ -89,6 +87,7 @@ public class Swerve extends SubsystemBase {
     public void driveRobotRelative(ChassisSpeeds speeds) {
         SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.maxSpeed);
+        DriverStation.reportWarning(Double.toString(speeds.omegaRadiansPerSecond), false);
         setModuleStates(states);
     }
 
@@ -122,7 +121,11 @@ public class Swerve extends SubsystemBase {
     }
 
     public Optional<Rotation2d> getRotationTargetOverride() {
-        return Optional.of(getHeading());
+        if (Robot.seesNote()) {
+            return Optional.of(Rotation2d.fromDegrees(Robot.getRobotToNoteYaw() + getHeading().getDegrees()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -132,9 +135,9 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees() * (-1)); // The multiplacation by (-1) fixed
-                                                                                    // a bug that thought the odometry
-                                                                                    // was reversed.
+        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees()); // The multiplacation by (-1) fixed
+                                                                             // a bug that thought the odometry
+                                                                             // was reversed.
     }
 
     public void setHeading(Rotation2d heading) {
@@ -153,7 +156,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        return Rotation2d.fromDegrees(gyro.getYaw() * -1);
     }
 
     public void resetModulesToAbsolute() {

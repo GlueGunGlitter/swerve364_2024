@@ -7,9 +7,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -23,21 +26,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /** Creates a new ShooterSubsystem. */
   public ShooterSubsystem() {
-    // nonStaticMotorPID = nonStaticMotor.getPIDController();
-    // staticMotorPID = staticMotor.getPIDController();
     nonStaticMotor.setInverted(false);
     staticMotor.setInverted(true);
 
     staticMotorSpeed = 0;
     nonStaticSpeed = 0;
 
-    // nonStaticMotorPID.setP(4);
-    // nonStaticMotorPID.setI(0);
-    // nonStaticMotorPID.setD(0);
-
-    // staticMotorPID.setP(4);
-    // staticMotorPID.setI(0);
-    // staticMotorPID.setD(0);
   }
 
   public void shootUp(double nonStaticMotorSpeed, double staticMotorSpeed) {
@@ -56,12 +50,12 @@ public class ShooterSubsystem extends SubsystemBase {
     staticMotor.stopMotor();
   }
 
-  public Command shootUpAotoCommand() {
-    return this.run(() -> shootUp(0.8, 0.8));
+  public Command shootUpAutoCommand(double stopTimeShootUp) {
+    return this.run(() -> shootUp(0.8, 0.8)).withTimeout(stopTimeShootUp);
   }
 
-  public Command shootDownAotoCommand() {
-    return this.run(() -> shootUp(0.4, 0.4));
+  public Command shootDownAutoCommand(double stopTimeShootDown) {
+    return this.run(() -> shootDown(0.4, 0.4)).withTimeout(stopTimeShootDown);
   }
 
   public Command shootUpCommand() {
@@ -70,7 +64,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public Command shooterDownCommand() {
-    return this.run(() -> shootDown(staticMotorSpeed - 0.4, nonStaticSpeed - 0.5))
+    return this.run(() -> shootDown(staticMotorSpeed - 0.3, nonStaticSpeed - 0.4))
         .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
   }
 

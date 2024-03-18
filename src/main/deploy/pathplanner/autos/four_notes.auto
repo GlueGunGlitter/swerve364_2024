@@ -48,7 +48,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "StartTransportation"
+                  "name": "StartHighSpeedTransportation"
                 }
               },
               {

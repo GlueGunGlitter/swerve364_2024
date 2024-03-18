@@ -1,0 +1,136 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.38,
+      "y": 5.54
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "OneNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TwoPiece69"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TransportUpAll"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimAtNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TransportDownAll"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OneNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "one piece  side"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TransportUpAll"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimAtNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TransportDownAll"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OneNote"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "one piece stage side"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "TransportUpAll"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimAtNote"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TransportDownAll"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "OneNote"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

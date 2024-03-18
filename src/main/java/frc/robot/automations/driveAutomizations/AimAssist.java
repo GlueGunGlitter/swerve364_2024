@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -23,7 +24,7 @@ public class AimAssist extends PIDCommand {
       DoubleSupplier rotationSup) {
     super(
         // The controller that the command will use
-        new PIDController(0.008, 0, 0),
+        new PIDController(0.008, 0, 0.0008),
         // This should return the measurement
         () -> Robot.getRobotToNoteYaw(),
         // This should return the setpoint (can also be a constant)
@@ -36,16 +37,24 @@ public class AimAssist extends PIDCommand {
 
           /* Drive */
           if (Robot.seesNote()) {
-            m_swerve.drive(
-                new Translation2d(-translationVal, -strafeVal).times(Constants.Swerve.maxSpeed),
-                -output * Constants.Swerve.maxAngularVelocity,
-                false,
-                true);
+            if (RobotContainer.xboxController.getYButton()) {
+              m_swerve.drive(
+                  new Translation2d(0.6, -strafeVal).times(Constants.Swerve.maxSpeed),
+                  -output * Constants.Swerve.maxAngularVelocity,
+                  false,
+                  true);
+            } else {
+              m_swerve.drive(
+                  new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
+                  -output * Constants.Swerve.maxAngularVelocity,
+                  true,
+                  true);
+            }
           } else {
             m_swerve.drive(
-                new Translation2d(-translationVal, -strafeVal).times(Constants.Swerve.maxSpeed),
+                new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
                 rotationVal * Constants.Swerve.maxAngularVelocity,
-                false,
+                true,
                 true);
           }
 

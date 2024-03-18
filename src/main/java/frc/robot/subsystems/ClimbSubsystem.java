@@ -4,41 +4,27 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class ClimbSubsystem extends SubsystemBase {
-  WPI_TalonSRX climbRightMotor = new WPI_TalonSRX(Constants.ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
-  WPI_TalonSRX climbLeftMotor = new WPI_TalonSRX(Constants.ClimbConstants.CLIMB_LEFT_MOTOR_PORT);
+  CANSparkMax climbRightMotor = new CANSparkMax(Constants.ClimbConstants.CLIMB_RIGHT_MOTOR_PORT,
+      MotorType.kBrushless);
+  CANSparkMax climbLeftMotor = new CANSparkMax(Constants.ClimbConstants.CLIMB_LEFT_MOTOR_PORT,
+      MotorType.kBrushless);
 
   /** Creates a new ClimbSubsystem. */
   public ClimbSubsystem() {
-    climbLeftMotor.configContinuousCurrentLimit(30);
-    climbRightMotor.configContinuousCurrentLimit(30);
-  }
-
-  public void setSpeed(double climbRightMotorSpeed, double climbleftMotorSpeed) {
-    climbRightMotor.set(climbRightMotorSpeed);
-    climbLeftMotor.set(climbleftMotorSpeed);
-  }
-
-  public void stopMotor() {
-    climbLeftMotor.set(0);
-    climbRightMotor.set(0);
-  }
-
-  public Command setSpeedCommand(double climbRightMotorSpeed, double climbleftMotorSpeed) {
-    return this.run(() -> setSpeed(climbRightMotorSpeed, climbleftMotorSpeed));
-  }
-
-  public Command stopMotorsCommand() {
-    return this.run(() -> stopMotor());
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    climbLeftMotor.set(RobotContainer.xboxController.getRightTriggerAxis());
+    climbRightMotor.set(RobotContainer.xboxController.getRightTriggerAxis());
   }
 }

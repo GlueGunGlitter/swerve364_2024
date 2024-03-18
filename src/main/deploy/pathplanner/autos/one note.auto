@@ -2,49 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6113694395719733,
-      "y": 6.67517683109546
+      "x": 1.290597959227301,
+      "y": 5.574358195791997
     },
-    "rotation": -115.82099197418927
+    "rotation": 177.48587395409632
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "HighShooter"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StartHighSpeedTransportation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopShooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopTransportation"
+            "pathName": "Test Path"
           }
         }
       ]

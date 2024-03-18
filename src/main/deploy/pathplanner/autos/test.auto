@@ -12,9 +12,52 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shooter"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TwoPiece69"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterUpDown"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "TwoPiece69"
+            "pathName": "one piece  side"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterUpDown"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "one piece stage side"
           }
         }
       ]

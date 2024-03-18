@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,25 +22,15 @@ public class TransportationSubsystem extends SubsystemBase {
   WPI_TalonSRX transportationMotor1 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_ONE);
   WPI_TalonSRX transportationMotor2 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_TWO);
 
-  // AddressableLED m_led = new AddressableLED(3);
-
-  // // Reuse buffer
-  // // Default to a length of 60, start empty output
-  // // Length is expensive to set, so only set it once, then just update data
-  // AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
-
   /** Creates a new IntakeSubsystem. */
   public TransportationSubsystem() {
     intakeHigherMotor.setInverted(true);
     intakeLowerMotor.setInverted(true);
     transportationMotor1.setInverted(true);
-    transportationMotor2.setInverted(true);
+    transportationMotor2.setInverted(false);
     transportationMotor1.configContinuousCurrentLimit(30);
     transportationMotor2.configContinuousCurrentLimit(30);
 
-    // m_led.setLength(m_ledBuffer.getLength());
-    // m_led.setData(m_ledBuffer);
-    // m_led.start();
   }
 
   public void setSpeed(double intakeLowerMotorSpeed, double intakeHigherMotorSpeed, double transportationMotorOneSpeed,
@@ -57,23 +48,14 @@ public class TransportationSubsystem extends SubsystemBase {
     transportationMotor1.set(0);
     transportationMotor2.set(0);
 
-    // for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-
-    // m_ledBuffer.setRGB(i, 0, 255, 0);
-    // }
-    // m_led.setData(m_ledBuffer);
   }
 
-  public Command transportUpAotoCommand() {
-    return this.run(() -> setSpeed(0, 0, 0.9, 0.9));
+  public Command transportUpAutoCommand(double stopTimetransportUp) {
+    return this.run(() -> setSpeed(0.8, 0.8, 0.7, 0.7)).withTimeout(stopTimetransportUp);
   }
 
-  public Command transportDowmAotoCommand() {
-    return this.run(() -> setSpeed(0, 0, -0.5, -0.5));
-  }
-
-  public Command transportUpHighSpeedAotoCommand() {
-    return this.run(() -> setSpeed(0.7, 0.7, 0.9, 0.9));
+  public Command transportDowmAutoCommand(double stopTimetransportDown) {
+    return this.run(() -> setSpeed(0, 0, -0.5, -0.5)).withTimeout(stopTimetransportDown);
   }
 
   public Command transportDownCommand() {
