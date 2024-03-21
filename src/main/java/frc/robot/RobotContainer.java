@@ -143,16 +143,24 @@ public class RobotContainer {
 	}
 
 	public void registerCommand() {
-		NamedCommands.registerCommand("ShooterUpDown", m_TransportationSubsystem.transportDowmAutoCommand(0.3)
-				// .alongWith(new WaitCommand(0.3)
-				.andThen(m_ShooterSubsystem.shootUpAutoCommand(2)
-						.alongWith(new WaitCommand(0.5)
-								.andThen(m_TransportationSubsystem
-										.transportUpAutoCommand(2)))));
-		NamedCommands.registerCommand("TransportUp", m_TransportationSubsystem.transportUpAutoCommand(3));
-		NamedCommands.registerCommand("Shooter", m_ShooterSubsystem.shootUpAutoCommand(1)
-				.alongWith(new WaitCommand(0.6)
-						.andThen(m_TransportationSubsystem.transportUpAutoCommand(2))));
+		NamedCommands.registerCommand("ShooterUpDown",
+				m_TransportationSubsystem.transportDowmAutoCommand(0.3)
+
+						.andThen(m_ShooterSubsystem.shootUpAutoCommand(2)
+
+								.alongWith(new WaitCommand(0.5)
+										.andThen(m_TransportationSubsystem
+												.transportUpAutoCommand(2)))));
+		NamedCommands.registerCommand("StopShooter1",
+				m_ShooterSubsystem.stopMotorsCommand());
+		NamedCommands.registerCommand("TransportUp",
+				m_TransportationSubsystem.transportUpAutoCommand(3));
+		NamedCommands.registerCommand("Shooter",
+				m_ShooterSubsystem.shootUpAutoCommand(2)
+						.alongWith(new WaitCommand(0.6)
+								.andThen(m_TransportationSubsystem.transportUpAutoCommand(1))));
+		// NamedCommands.registerCommand("TransportDown",
+		// m_TransportationSubsystem.transportDowmAutoCommand(0.3));
 		/*
 		 * p
 		 * NamedCommands.registerCommand("AutoAimAssist", new AimAssistAutonomus(
@@ -161,7 +169,6 @@ public class RobotContainer {
 		 * () -> -driver.getRawAxis(strafeAxis),
 		 * () -> -driver.getRawAxis(rotationAxis)));
 		 */
-
 		NamedCommands.registerCommand(
 				"AimAtNote",
 				new InstantCommand(

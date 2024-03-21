@@ -3,57 +3,57 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.19,
-        "y": 5.42
+        "x": 1.244993259217289,
+        "y": 5.564955745296107
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5500701432172113,
-        "y": 4.568793692972002
+        "x": 1.5311346007307411,
+        "y": 5.791895429944707
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8962114847306633,
-        "y": 3.877708524647819
+        "x": 1.8271428850550027,
+        "y": 7.01
       },
       "prevControl": {
-        "x": 1.424066010919512,
-        "y": 3.9162510123058722
+        "x": 1.5014503008094602,
+        "y": 7.048772926695898
       },
       "nextControl": {
-        "x": 2.3796916824602894,
-        "y": 3.8382407534045844
+        "x": 2.2415544831089678,
+        "y": 6.9606652859459555
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.685566909595359,
-        "y": 3.877708524647819
+        "x": 3.28745042105469,
+        "y": 7.01
       },
       "prevControl": {
-        "x": 2.251421425919776,
-        "y": 3.7691721537289236
+        "x": 2.8237041089466812,
+        "y": 7.029733885621618
       },
       "nextControl": {
-        "x": 2.935183012193594,
-        "y": 3.9401125502973775
+        "x": 3.7699962796495194,
+        "y": 6.989466133676815
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3140196323188638,
-        "y": 5.5
+        "x": 1.3732635157578024,
+        "y": 5.564955745296107
       },
       "prevControl": {
-        "x": 0.6825352924271073,
-        "y": 5.529600828432426
+        "x": 2.44876028213595,
+        "y": 6.285242570485141
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,12 +64,18 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "transport",
-      "waypointRelativePos": 0.95,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "parallel",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "StopShooter1"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -89,13 +95,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 178.26516216617762,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -9,6 +9,7 @@ import org.photonvision.PhotonCamera;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
@@ -124,10 +125,14 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // this line or comment it out
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.s_Swerve.zeroHeading();
+    m_robotContainer.s_Swerve
+        .setHeading(Rotation2d.fromDegrees(m_robotContainer.s_Swerve.getHeading().getDegrees() + 180));
   }
 
   /** This function is called periodically during operator control. */

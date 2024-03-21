@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.54
+      "x": 1.3140618588929502,
+      "y": 5.53
     },
-    "rotation": 0.0
+    "rotation": 178.4925642412249
   },
   "command": {
     "type": "sequential",
@@ -14,61 +14,26 @@
         {
           "type": "named",
           "data": {
-            "name": "HighShooter"
+            "name": "Shooter"
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StartTransportation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TwoPiece69"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.1
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "twonotes"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "StopTransportation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StartTransportation"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "ShooterUpDown"
           }
         }
       ]
