@@ -4,19 +4,13 @@ import frc.robot.SwerveModule;
 import frc.lib.HaNavX;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import java.util.Optional;
-
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
@@ -88,7 +82,6 @@ public class Swerve extends SubsystemBase {
 
     public void driveRobotRelative(ChassisSpeeds speeds) {
         SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.maxSpeed);
         DriverStation.reportWarning(Double.toString(speeds.omegaRadiansPerSecond), false);
         setModuleStates(states);
     }
@@ -145,8 +138,6 @@ public class Swerve extends SubsystemBase {
 
     public void zeroHeading() {
         setHeading(Rotation2d.fromDegrees(0.0));
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
-                new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     public Rotation2d getGyroYaw() {

@@ -4,12 +4,26 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import org.photonvision.PhotonCamera;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -18,6 +32,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -65,7 +80,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     smartDashboard();
     robotContainer = new RobotContainer();
-
+    warmupCommand().schedule();
   }
 
   /**
@@ -201,5 +216,25 @@ public class Robot extends TimedRobot {
 
   public static boolean seesNote() {
     return notesCamera.getLatestResult().hasTargets();
+  }
+
+  public static Command warmupCommand() {
+    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(
+        new Pose2d(3.0, 3.0, new Rotation2d()), new Pose2d(6.0, 6.0, new Rotation2d()));
+    PathPlannerPath path = new PathPlannerPath(
+        bezierPoints,
+        new PathConstraints(4.0, 4.0, 4.0, 4.0),
+        new GoalEndState(0.0, Rotation2d.fromDegrees(90), true));
+
+    return new FollowPathHolonomic(
+        path,
+        Pose2d::new,
+        ChassisSpeeds::new,
+        (speeds) -> {
+        },
+        new HolonomicPathFollowerConfig(4.5, 0.4, new ReplanningConfig()),
+        () -> true)
+        .andThen(Commands.print("[PathPlanner] FollowPathCommand finished warmup"))
+        .ignoringDisable(true);
   }
 }

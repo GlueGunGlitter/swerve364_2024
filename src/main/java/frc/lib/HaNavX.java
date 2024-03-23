@@ -114,7 +114,7 @@ public class HaNavX implements Sendable {
 	 */
 	public double getYawAngleDeg() {
 		try {
-			return -this.navX.getYaw() - this.yawOffsetDeg;
+			return -this.navX.getAngle() - this.yawOffsetDeg;
 		} catch (RuntimeException e) {
 			return 0.0;
 		}
