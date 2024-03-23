@@ -129,10 +129,6 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-
-    robotContainer.swerve.zeroHeading();
-    robotContainer.swerve
-        .setHeading(Rotation2d.fromDegrees(robotContainer.swerve.getHeading().getDegrees() + 180));
   }
 
   /** This function is called periodically during operator control. */

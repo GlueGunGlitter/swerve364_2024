@@ -31,8 +31,8 @@ public class AimAssist extends PIDCommand {
         () -> 0,
         // This uses the output
         output -> {
-          double translationVal = -MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
-          double strafeVal = -MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
+          double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
+          double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
           double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
           /* Drive */

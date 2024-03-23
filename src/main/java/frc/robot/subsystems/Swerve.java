@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.SwerveModule;
+import frc.lib.HaNavX;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -31,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    private final AHRS gyro;
+    private final HaNavX gyro;
 
     public Swerve() {
         AutoBuilder.configureHolonomic(
@@ -54,7 +55,7 @@ public class Swerve extends SubsystemBase {
                 },
                 this);
 
-        gyro = new AHRS(SPI.Port.kMXP);
+        gyro = new HaNavX(SPI.Port.kMXP);
         gyro.zeroYaw();
 
         mSwerveMods = new SwerveModule[] {
@@ -130,32 +131,26 @@ public class Swerve extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
+        setHeading(pose.getRotation().unaryMinus());
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
     }
 
     public Rotation2d getHeading() {
-        return Rotation2d.fromDegrees(getPose().getRotation().getDegrees() * (-1)); // The multiplacation by (-1) fixed
-        // a bug that thought the odometry
-        // was reversed.
+        return Rotation2d.fromDegrees(gyro.getYawAngleDeg());
     }
 
     public void setHeading(Rotation2d heading) {
-        swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
-                new Pose2d(getPose().getTranslation(), heading));
+        gyro.setYaw(heading.getDegrees());
     }
 
     public void zeroHeading() {
+        setHeading(Rotation2d.fromDegrees(0.0));
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(),
-                new Pose2d(getPose().getTranslation(), new Rotation2d()));
-    }
-
-    public void zeroHeadingReversed() {
-        swerveOdometry.resetPosition(Rotation2d.fromDegrees(getGyroYaw().getDegrees() + 180), getModulePositions(),
                 new Pose2d(getPose().getTranslation(), new Rotation2d()));
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        return Rotation2d.fromDegrees(gyro.getYawAngleDeg());
     }
 
     public void resetModulesToAbsolute() {
