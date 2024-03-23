@@ -11,13 +11,13 @@ import frc.robot.subsystems.TransportationSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TransportAllTime extends SequentialCommandGroup {
-  TransportationSubsystem m_TransportationSubsystem;
+  TransportationSubsystem transportationSubsystem;
 
   /** Creates a new TransportAllTime. */
-  public TransportAllTime(TransportationSubsystem m_TransportationSubsystem) {
-    this.m_TransportationSubsystem = m_TransportationSubsystem;
+  public TransportAllTime(TransportationSubsystem transportationSubsystem) {
+    this.transportationSubsystem = transportationSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(m_TransportationSubsystem.transportUpAutoCommand(4));
+    addCommands(transportationSubsystem.transportUpAutoCommand(4));
   }
 }

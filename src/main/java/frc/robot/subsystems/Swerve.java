@@ -131,8 +131,6 @@ public class Swerve extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);
-        DriverStation.reportWarning(RobotContainer.getAlliance().name(), false);
-
     }
 
     public Rotation2d getHeading() {
@@ -166,26 +164,20 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    // public void setWheelsToCross() {
-    // SwerveModuleState[] crossStates = {
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(225)),
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(315))
-    // };
+    public void crossWheels() {
+        SwerveModuleState[] crossStates = {
+                new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+                new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+                new SwerveModuleState(0, Rotation2d.fromDegrees(115)),
+                new SwerveModuleState(0, Rotation2d.fromDegrees(225))
+        };
 
-    // for (int i = 0; i < 4; i++) {
-    // mSwerveMods[i].setDesiredState(crossStates[i], false);
+        setModuleStates(crossStates);
+    }
 
-    // // double absolutePosition = getCANcoder().getRotations() -
-    // // angleOffset.getRotations();
-    // // mAngleMotor.setPosition(absolutePosition);
-    // }
-    // }
-
-    // public Command crossWheelsCommand() {
-    // return this.run(this::setWheelsToCross);
-    // }
+    public Command crossWheelsCommand() {
+        return this.run(this::crossWheels);
+    }
 
     public ChassisSpeeds getSpeeds() {
         return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());

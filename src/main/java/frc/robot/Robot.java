@@ -33,9 +33,9 @@ public class Robot extends TimedRobot {
 
   public static final CTREConfigs ctreConfigs = new CTREConfigs();
 
-  private Command m_autonomousCommand;
+  private Command autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
 
   public static GenericEntry intakeHigherMotorSpeed;
   public static GenericEntry intakeLowerMotorSpeed;
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   public static GenericEntry isReversedZeroHeading;
   public static GenericEntry deg60Heading;
 
-  public Spark m_ledSpark;
+  public Spark ledSpark;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     smartDashboard();
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
 
   }
 
@@ -107,11 +107,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
     }
   }
 
@@ -126,13 +126,13 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
 
-    m_robotContainer.s_Swerve.zeroHeading();
-    m_robotContainer.s_Swerve
-        .setHeading(Rotation2d.fromDegrees(m_robotContainer.s_Swerve.getHeading().getDegrees() + 180));
+    robotContainer.swerve.zeroHeading();
+    robotContainer.swerve
+        .setHeading(Rotation2d.fromDegrees(robotContainer.swerve.getHeading().getDegrees() + 180));
   }
 
   /** This function is called periodically during operator control. */

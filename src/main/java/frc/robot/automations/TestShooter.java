@@ -16,6 +16,6 @@ public class TestShooter extends SequentialCommandGroup {
   public TestShooter() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new InstantCommand(() -> RobotContainer.m_ShooterSubsystem.shootUp(0.8, 0.8)));
+    addCommands(new InstantCommand(() -> RobotContainer.shooter.shootUp(0.8, 0.8)));
   }
 }

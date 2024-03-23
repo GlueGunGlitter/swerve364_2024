@@ -1,30 +1,22 @@
 package frc.robot;
 
-import java.util.Optional;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.automations.TestShooter;
 import frc.robot.automations.driveAutomizations.AimAssist;
-import frc.robot.autos.OneNote;
-import frc.robot.autos.TransportAllTime;
-import frc.robot.autos.TransportDown;
 import frc.robot.commands.driveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -45,9 +37,9 @@ public class RobotContainer {
 	private final static Joystick driver = new Joystick(0);
 
 	/* Drive Controls */
-	private final int translationAxis = XboxController.Axis.kLeftY.value;
-	private final int strafeAxis = XboxController.Axis.kLeftX.value;
-	private final int rotationAxis = XboxController.Axis.kRightX.value;
+	private static final int translationAxis = XboxController.Axis.kLeftY.value;
+	private static final int strafeAxis = XboxController.Axis.kLeftX.value;
+	private static final int rotationAxis = XboxController.Axis.kRightX.value;
 
 	/* Driver Buttons */
 
@@ -62,16 +54,12 @@ public class RobotContainer {
 	// private final JoystickButton IntakeEnableCommand = new JoystickButton(driver,
 	// XboxController.Button.kRightBumper.value);
 	/* Subsystems */
-	public final Swerve s_Swerve = new Swerve();
-	public static final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-	public static final TransportationSubsystem m_TransportationSubsystem = new TransportationSubsystem();
-	public static final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
-	private final SendableChooser<Command> autoChooser;
-	static private Alliance robotAlliance = Alliance.Blue;
+	public final Swerve swerve = new Swerve();
+	public static final ShooterSubsystem shooter = new ShooterSubsystem();
+	public static final TransportationSubsystem transportation = new TransportationSubsystem();
+	public static final ClimbSubsystem climb = new ClimbSubsystem();
 
-	public static Alliance getAlliance() {
-		return robotAlliance;
-	}
+	private final SendableChooser<Command> autoChooser;
 
 	/**
 	 * q+
@@ -101,73 +89,77 @@ public class RobotContainer {
 	 */
 	private void configureButtonBindings() {
 		/* Driver Buttons */
-		zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+		zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroHeading()));
 
 		// Shooter Triggers
-		commandXBoxController.a().whileTrue(m_ShooterSubsystem.shootUpCommand().alongWith(
-				new WaitCommand(0.5).andThen(m_TransportationSubsystem.transportUpCommand())));
-		commandXBoxController.b().whileTrue(m_ShooterSubsystem.shooterDownCommand().alongWith(
-				new WaitCommand(0.5).andThen(m_TransportationSubsystem.transportUpCommand())));
+		commandXBoxController.rightBumper().whileTrue(shooter.shootUpCommand().alongWith(
+				new WaitCommand(0.5).andThen(transportation.transportUpCommand()))
+				.deadlineWith(teleopSwerve(true)));
+		commandXBoxController.leftBumper().whileTrue(shooter.shooterDownCommand().alongWith(
+				new WaitCommand(0.5).andThen(transportation.transportUpCommand()))
+				.deadlineWith(teleopSwerve(true)));
 
 		// Transportation Triggers
-		commandXBoxController.rightBumper().toggleOnTrue(
-				m_TransportationSubsystem.transportUpCommand());
-		commandXBoxController.x().toggleOnTrue(m_TransportationSubsystem.transportDownCommand());
+		commandXBoxController.a().toggleOnTrue(
+				transportation.transportUpCommand());
+		commandXBoxController.x().toggleOnTrue(transportation.transportDownCommand());
 
 		// Climb Triggers
-		// commandXBoxController.rightTrigger().whileTrue(m_ClimbSubsystem.setSpeedCommand());
+		// commandXBoxController.rightTrigger().whileTrue(climbSubsystem.setSpeedCommand());
 
 		// Aim Assist Triggers
 		commandXBoxController.leftTrigger().whileTrue(new AimAssist(
-				s_Swerve,
+				swerve,
 				() -> -driver.getRawAxis(translationAxis),
 				() -> -driver.getRawAxis(strafeAxis),
 				() -> -driver.getRawAxis(rotationAxis))
-				.alongWith(m_TransportationSubsystem.transportUpCommand()));
+				.alongWith(transportation.transportUpCommand()));
 
 		// Test Triggers
-		// commandXBoxController.back().toggleOnTrue(s_Swerve.crossWheelsCommand());
 	}
 
 	private void setDefaultCommands() {
-		s_Swerve.setDefaultCommand(new TeleopSwerve(
-				s_Swerve,
+		swerve.setDefaultCommand(teleopSwerve(false));
+
+		shooter.setDefaultCommand(shooter.stopMotorsCommand());
+
+		transportation.setDefaultCommand(transportation.stopMotorsCommand());
+
+		// climbSubsystem.setDefaultCommand(climbSubsystem.stopMotorsCommand());
+
+	}
+
+	private Command teleopSwerve(boolean crossWhileNotMoving) {
+		return new TeleopSwerve(
+				swerve,
 				() -> -driver.getRawAxis(translationAxis),
 				() -> -driver.getRawAxis(strafeAxis),
 				() -> -driver.getRawAxis(rotationAxis),
-				() -> robotCentric.getAsBoolean()));
-
-		m_ShooterSubsystem.setDefaultCommand(m_ShooterSubsystem.stopMotorsCommand());
-
-		m_TransportationSubsystem.setDefaultCommand(m_TransportationSubsystem.stopMotorsCommand());
-
-		// m_ClimbSubsystem.setDefaultCommand(m_ClimbSubsystem.stopMotorsCommand());
-
+				() -> robotCentric.getAsBoolean(),
+				crossWhileNotMoving);
 	}
 
 	public void registerCommand() {
 		NamedCommands.registerCommand("ShooterUpDown",
-				m_TransportationSubsystem.transportDowmAutoCommand(0.3)
-
-						.andThen(m_ShooterSubsystem.shootUpAutoCommand(2)
-
+				transportation.transportDowmAutoCommand(0.3)
+						.andThen(shooter.shootUpAutoCommand(2)
 								.alongWith(new WaitCommand(0.5)
-										.andThen(m_TransportationSubsystem
+										.andThen(transportation
 												.transportUpAutoCommand(2)))));
 		NamedCommands.registerCommand("StopShooter1",
-				m_ShooterSubsystem.stopMotorsCommand());
+				shooter.stopMotorsCommand());
 		NamedCommands.registerCommand("TransportUp",
-				m_TransportationSubsystem.transportUpAutoCommand(3));
+				transportation.transportUpAutoCommand(3));
 		NamedCommands.registerCommand("Shooter",
-				m_ShooterSubsystem.shootUpAutoCommand(2)
+				shooter.shootUpAutoCommand(2)
 						.alongWith(new WaitCommand(0.6)
-								.andThen(m_TransportationSubsystem.transportUpAutoCommand(1))));
+								.andThen(transportation.transportUpAutoCommand(1))));
 		// NamedCommands.registerCommand("TransportDown",
-		// m_TransportationSubsystem.transportDowmAutoCommand(0.3));
+		// transportationSubsystem.transportDowmAutoCommand(0.3));
 		/*
 		 * p
 		 * NamedCommands.registerCommand("AutoAimAssist", new AimAssistAutonomus(
-		 * s_Swerve,
+		 * swerve,
 		 * () -> -driver.getRawAxis(translationAxis),
 		 * () -> -driver.getRawAxis(strafeAxis),
 		 * () -> -driver.getRawAxis(rotationAxis)));
@@ -176,7 +168,7 @@ public class RobotContainer {
 				"AimAtNote",
 				new InstantCommand(
 						() -> PPHolonomicDriveController
-								.setRotationTargetOverride(s_Swerve::getRotationTargetOverride)));
+								.setRotationTargetOverride(swerve::getRotationTargetOverride)));
 	}
 
 	/**
@@ -186,5 +178,11 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
+	}
+
+	public static boolean areJoysticksMoving() {
+		return Math.abs(MathUtil.applyDeadband(driver.getRawAxis(translationAxis), Constants.stickDeadband)) > 0.0 ||
+				Math.abs(MathUtil.applyDeadband(driver.getRawAxis(strafeAxis), Constants.stickDeadband)) > 0.0 ||
+				Math.abs(MathUtil.applyDeadband(driver.getRawAxis(rotationAxis), Constants.stickDeadband)) > 0.0;
 	}
 }

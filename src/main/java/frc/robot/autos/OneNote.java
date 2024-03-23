@@ -18,18 +18,18 @@ import frc.robot.subsystems.TransportationSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class OneNote extends SequentialCommandGroup {
   /** Creates a new OneNote. */
-  TransportationSubsystem m_TransportationSubsystem;
-  ShooterSubsystem m_ShooterSubsystem;
+  TransportationSubsystem transportationSubsystem;
+  ShooterSubsystem shooterSubsystem;
 
-  public OneNote(TransportationSubsystem m_TransportationSubsystem, ShooterSubsystem m_ShooterSubsystem) {
-    this.m_TransportationSubsystem = m_TransportationSubsystem;
-    this.m_ShooterSubsystem = m_ShooterSubsystem;
+  public OneNote(TransportationSubsystem transportationSubsystem, ShooterSubsystem shooterSubsystem) {
+    this.transportationSubsystem = transportationSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        m_TransportationSubsystem.transportUpAutoCommand(4));
-    // m_ShooterSubsystem.shootUpAutoCommand(3));
+        transportationSubsystem.transportUpAutoCommand(4));
+    // shooterSubsystem.shootUpAutoCommand(3));
     // .alongWith(new WaitCommand(0.5)
-    // .andThen(m_TransportationSubsystem.transportUpAutoCommand(2))));
+    // .andThen(transportationSubsystem.transportUpAutoCommand(2))));
   }
 }

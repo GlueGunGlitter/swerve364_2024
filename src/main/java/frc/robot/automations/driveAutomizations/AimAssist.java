@@ -20,7 +20,7 @@ import frc.robot.subsystems.Swerve;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AimAssist extends PIDCommand {
   /** Creates a new Test. */
-  public AimAssist(Swerve m_swerve, DoubleSupplier translationX, DoubleSupplier translationY,
+  public AimAssist(Swerve swerve, DoubleSupplier translationX, DoubleSupplier translationY,
       DoubleSupplier rotationSup) {
     super(
         // The controller that the command will use
@@ -38,20 +38,20 @@ public class AimAssist extends PIDCommand {
           /* Drive */
           if (Robot.seesNote()) {
             if (RobotContainer.xboxController.getYButton()) {
-              m_swerve.drive(
+              swerve.drive(
                   new Translation2d(0.6, -strafeVal).times(Constants.Swerve.maxSpeed),
                   -output * Constants.Swerve.maxAngularVelocity,
                   false,
                   true);
             } else {
-              m_swerve.drive(
+              swerve.drive(
                   new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
                   -output * Constants.Swerve.maxAngularVelocity,
                   true,
                   true);
             }
           } else {
-            m_swerve.drive(
+            swerve.drive(
                 new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
                 rotationVal * Constants.Swerve.maxAngularVelocity,
                 true,
@@ -59,7 +59,7 @@ public class AimAssist extends PIDCommand {
           }
 
         },
-        m_swerve);
+        swerve);
   };
   // Use addRequirements() here to declare subsystem dependencies.
   // Configure additional PID options by calling `getController` here.
