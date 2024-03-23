@@ -89,6 +89,8 @@ public class SwerveModule {
         mAngleMotor.setPosition(absolutePosition);
     }
 
+    // #TODO Write a resetToAngle function and use it in the swerve subsystem
+
     public SwerveModuleState getState() {
         return new SwerveModuleState(
                 Conversions.RPSToMPS(mDriveMotor.getVelocity().getValue(), Constants.Swerve.wheelCircumference),

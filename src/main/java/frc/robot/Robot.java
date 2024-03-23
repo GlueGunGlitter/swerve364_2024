@@ -164,10 +164,10 @@ public class Robot extends TimedRobot {
     staticShooterMotorSpeed = Shuffleboard.getTab("Shooter").add("Static motor speed (red line)", 0.8)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    transportationMotorOneSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor one speed", 0.5)
+    transportationMotorOneSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor one speed", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
-    transportationMotorTwoSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor two speed", 0.5)
+    transportationMotorTwoSpeed = Shuffleboard.getTab("Transportation").add("Transportation motor two speed", 0.7)
         .withWidget(BuiltInWidgets.kTextView)
         .getEntry();
     climbLeftNotorSpeed = Shuffleboard.getTab("Climb").add("Climb left motor speed", 1)
