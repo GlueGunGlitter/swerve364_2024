@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -92,12 +95,15 @@ public class RobotContainer {
 		zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroHeading()));
 
 		// Shooter Triggers
-		commandXBoxController.rightBumper().whileTrue(shooter.shootUpCommand().alongWith(
-				new WaitCommand(0.5).andThen(transportation.transportUpCommand()))
-				.deadlineWith(teleopSwerve(true)));
-		commandXBoxController.leftBumper().whileTrue(shooter.shooterDownCommand().alongWith(
-				new WaitCommand(0.5).andThen(transportation.transportUpCommand()))
-				.deadlineWith(teleopSwerve(true)));
+		commandXBoxController.rightBumper().whileTrue(
+				shooter.shootUpCommand()
+						.alongWith(waitAndLoadCommand())
+						.deadlineWith(teleopSwerve(true)));
+
+		commandXBoxController.leftBumper().whileTrue(
+				shooter.shooterDownCommand()
+						.alongWith(waitAndLoadCommand())
+						.deadlineWith(teleopSwerve(true)));
 
 		// Transportation Triggers
 		commandXBoxController.a().toggleOnTrue(
@@ -137,6 +143,13 @@ public class RobotContainer {
 				() -> -driver.getRawAxis(rotationAxis),
 				() -> robotCentric.getAsBoolean(),
 				crossWhileNotMoving);
+	}
+
+	private Command waitAndLoadCommand() {
+		return new WaitCommand(0.1)
+				.andThen(new WaitUntilCommand(() -> !areJoysticksMoving()))
+				.andThen(new WaitCommand(0.5))
+				.andThen(transportation.transportUpCommand());
 	}
 
 	public void registerCommand() {
