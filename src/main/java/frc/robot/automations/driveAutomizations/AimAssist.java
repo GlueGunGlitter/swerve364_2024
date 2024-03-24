@@ -26,7 +26,7 @@ public class AimAssist extends PIDCommand {
         // The controller that the command will use
         new PIDController(0.008, 0, 0.0008),
         // This should return the measurement
-        () -> Robot.getRobotToNoteYaw(),
+        () -> RobotContainer.note_vision.getRobotToNoteYaw(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
@@ -36,7 +36,7 @@ public class AimAssist extends PIDCommand {
           double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
           /* Drive */
-          if (Robot.seesNote()) {
+          if ( RobotContainer.note_vision.seesNote()) {
             if (RobotContainer.xboxController.getYButton()) {
               swerve.drive(
                   new Translation2d(0.6, -strafeVal).times(Constants.Swerve.maxSpeed),
