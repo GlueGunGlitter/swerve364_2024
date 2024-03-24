@@ -203,20 +203,6 @@ public class Robot extends TimedRobot {
 
   }
 
-  public static final PhotonCamera notesCamera = new PhotonCamera("Notes-Limelight");
-
-  public static double getRobotToNoteYaw() {
-
-    var result = notesCamera.getLatestResult();
-    if (!result.hasTargets())
-      return 0.0;
-    else
-      return result.getBestTarget().getYaw();
-  }
-
-  public static boolean seesNote() {
-    return notesCamera.getLatestResult().hasTargets();
-  }
 
   public static Command warmupCommand() {
     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(

@@ -3,7 +3,8 @@ package frc.robot.subsystems;
 import frc.robot.SwerveModule;
 import frc.lib.HaNavX;
 import frc.robot.Constants;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -116,8 +117,8 @@ public class Swerve extends SubsystemBase {
     }
 
     public Optional<Rotation2d> getRotationTargetOverride() {
-        if (Robot.seesNote()) {
-            return Optional.of(Rotation2d.fromDegrees(Robot.getRobotToNoteYaw() + getHeading().getDegrees()));
+        if (RobotContainer.note_vision.seesNote()) {
+            return Optional.of(Rotation2d.fromDegrees(RobotContainer.note_vision.getRobotToNoteYaw() + getHeading().getDegrees()));
         } else {
             return Optional.empty();
         }
