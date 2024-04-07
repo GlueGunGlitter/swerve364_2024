@@ -28,9 +28,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     nonStaticMotor.setInverted(false);
     staticMotor.setInverted(true);
-
     staticMotorSpeed = 0;
     nonStaticSpeed = 0;
+
+    // staticMotor.setInverted(true);
 
   }
 
@@ -41,8 +42,9 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shootDown(double nonStaticMotorSpeed, double staticMotorSpeed) {
-    nonStaticMotor.set(nonStaticMotorSpeed);
-    staticMotor.set(staticMotorSpeed);
+    nonStaticMotor.set(-nonStaticMotorSpeed);
+    staticMotor.set(-staticMotorSpeed);
+
   }
 
   public void stopMotors() {

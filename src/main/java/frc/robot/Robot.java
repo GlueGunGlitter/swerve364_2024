@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.List;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
@@ -19,13 +20,17 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -63,8 +68,8 @@ public class Robot extends TimedRobot {
   public static GenericEntry climbLeftNotorSpeed;
   public static GenericEntry isReversedZeroHeading;
   public static GenericEntry deg60Heading;
-
   public Spark ledSpark;
+  PhotonCamera aprilTagCamera;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -73,6 +78,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    aprilTagCamera = new PhotonCamera("AprilTags-Camera");
     // CameraServer.startAutomaticCapture();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -149,6 +155,18 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    // System.out.println(aprilTagCamera.);
+
+    var result = aprilTagCamera.getLatestResult();
+    if (result.hasTargets()) {
+      PhotonTrackedTarget target = result.getBestTarget();
+      Transform3d pose = target.getBestCameraToTarget();
+
+      DriverStation.reportWarning(Double.toString(pose.getY()), false);
+    } else {
+      DriverStation.reportWarning("Not seeing targets", false);
+    }
+
   }
 
   @Override
@@ -202,7 +220,6 @@ public class Robot extends TimedRobot {
     // .getEntry();
 
   }
-
 
   public static Command warmupCommand() {
     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(

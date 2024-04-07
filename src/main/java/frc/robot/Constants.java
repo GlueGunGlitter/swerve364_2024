@@ -194,7 +194,7 @@ public final class Constants {
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
                 new PIDConstants(10, 0.0, 1), // Translation PID constants
-                new PIDConstants(0.05, 0.0, 0.0001), // Rotation constants
+                new PIDConstants(0.005, 0, 0.0001), // Rotation constants
                 kMaxSpeedMetersPerSecond,
                 Swerve.robotRadius, // Drive base radius (distance from center to furthest module)
                 new ReplanningConfig());
