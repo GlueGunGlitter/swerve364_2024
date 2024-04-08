@@ -19,8 +19,10 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.Vision.AprilTagVision;
 import frc.robot.Vision.NoteVision;
 import frc.robot.automations.driveAutomizations.AimAssist;
+import frc.robot.automations.driveAutomizations.AmpAssist;
 import frc.robot.commands.driveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -63,6 +65,7 @@ public class RobotContainer {
 	public static final TransportationSubsystem transportation = new TransportationSubsystem();
 	public static final ClimbSubsystem climb = new ClimbSubsystem();
 	public static final NoteVision note_vision = new NoteVision();
+	public static final AprilTagVision aprilTag_Vision = new AprilTagVision();
 
 	private final SendableChooser<Command> autoChooser;
 
@@ -125,6 +128,11 @@ public class RobotContainer {
 				.alongWith(transportation.transportUpCommand()));
 
 		// Test Triggers
+		commandXBoxController.b().whileTrue(new AmpAssist(swerve,
+				() -> -driver.getRawAxis(translationAxis),
+				() -> -driver.getRawAxis(strafeAxis),
+				() -> -driver.getRawAxis(rotationAxis)));
+
 	}
 
 	private void setDefaultCommands() {

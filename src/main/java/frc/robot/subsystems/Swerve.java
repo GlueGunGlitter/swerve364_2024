@@ -118,7 +118,8 @@ public class Swerve extends SubsystemBase {
 
     public Optional<Rotation2d> getRotationTargetOverride() {
         if (RobotContainer.note_vision.seesNote()) {
-            return Optional.of(Rotation2d.fromDegrees(RobotContainer.note_vision.getRobotToNoteYaw() + getHeading().getDegrees()));
+            return Optional.of(
+                    Rotation2d.fromDegrees(RobotContainer.note_vision.getRobotToNoteYaw() + getHeading().getDegrees()));
         } else {
             return Optional.empty();
         }
@@ -179,5 +180,8 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
+        System.out.println(getHeading());
+
     }
+
 }

@@ -78,7 +78,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    aprilTagCamera = new PhotonCamera("AprilTags-Camera");
     // CameraServer.startAutomaticCapture();
 
     // Instantiate our RobotContainer. This will perform all our button bindings,
@@ -156,16 +155,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // System.out.println(aprilTagCamera.);
-
-    var result = aprilTagCamera.getLatestResult();
-    if (result.hasTargets()) {
-      PhotonTrackedTarget target = result.getBestTarget();
-      Transform3d pose = target.getBestCameraToTarget();
-
-      DriverStation.reportWarning(Double.toString(pose.getY()), false);
-    } else {
-      DriverStation.reportWarning("Not seeing targets", false);
-    }
 
   }
 
