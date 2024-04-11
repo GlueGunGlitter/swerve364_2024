@@ -12,10 +12,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import java.util.Optional;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -82,6 +83,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void driveRobotRelative(ChassisSpeeds speeds) {
+        speeds.omegaRadiansPerSecond = speeds.omegaRadiansPerSecond * -1;
         SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
         DriverStation.reportWarning(Double.toString(speeds.omegaRadiansPerSecond), false);
         setModuleStates(states);
@@ -119,10 +121,15 @@ public class Swerve extends SubsystemBase {
     public Optional<Rotation2d> getRotationTargetOverride() {
         if (RobotContainer.note_vision.seesNote()) {
             return Optional.of(
-                    Rotation2d.fromDegrees(RobotContainer.note_vision.getRobotToNoteYaw() + getHeading().getDegrees()));
+                    Rotation2d.fromDegrees(
+                            -(RobotContainer.note_vision.getRobotToNoteYaw() - getHeading().getDegrees())));
         } else {
             return Optional.empty();
         }
+    }
+
+    public Rotation2d invertRotation(Pose2d pose) {
+        return Rotation2d.fromDegrees(pose.getRotation().getDegrees() * -1);
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -144,9 +151,11 @@ public class Swerve extends SubsystemBase {
 
     public Rotation2d getGyroYaw() {
         return Rotation2d.fromDegrees(gyro.getYawAngleDeg());
+        // return gyro.getYaw();
     }
 
     public void resetModulesToAbsolute() {
+
         for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
@@ -171,6 +180,19 @@ public class Swerve extends SubsystemBase {
         return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
     }
 
+    public Command driveForwordInRobotRelativCommand(DoubleSupplier translationX, DoubleSupplier translationY,
+            DoubleSupplier rotationSup) {
+        double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
+        double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
+        double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+
+        return this.run(() -> drive(
+                new Translation2d(-0.3, strafeVal).times(Constants.Swerve.maxSpeed),
+                rotationVal * Constants.Swerve.maxAngularVelocity,
+                false,
+                true));
+    }
+
     @Override
     public void periodic() {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
@@ -180,7 +202,7 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
-        System.out.println(getHeading());
+        // System.out.println(Math.IEEEremainder(getHeading().getDegrees(), 360));
 
     }
 

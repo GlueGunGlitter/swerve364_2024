@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,12 +22,13 @@ public class TransportationSubsystem extends SubsystemBase {
       MotorType.kBrushless);
   WPI_TalonSRX transportationMotor1 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_ONE);
   WPI_TalonSRX transportationMotor2 = new WPI_TalonSRX(Constants.TransportationConstants.TRANSPORTATION_MOTOR_PORT_TWO);
+  private final AnalogInput trigger0 = new AnalogInput(0);
 
   /** Creates a new IntakeSubsystem. */
   public TransportationSubsystem() {
     intakeHigherMotor.setInverted(true);
     intakeLowerMotor.setInverted(true);
-    transportationMotor1.setInverted(true);
+    transportationMotor1.setInverted(false);
     transportationMotor2.setInverted(false);
     transportationMotor1.configContinuousCurrentLimit(30);
     transportationMotor2.configContinuousCurrentLimit(30);
@@ -42,6 +44,23 @@ public class TransportationSubsystem extends SubsystemBase {
 
   }
 
+  private void upWithStop() {
+    if (trigger0.getValue() > 3500) {
+      stopMotors();
+    } else {
+      setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
+          Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
+          Robot.transportationMotorTwoSpeed.getDouble(0));
+    }
+  }
+
+  private void upWithOutStop() {
+    setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
+        Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
+        Robot.transportationMotorTwoSpeed.getDouble(0));
+
+  }
+
   public void stopMotors() {
     intakeHigherMotor.set(0);
     intakeLowerMotor.set(0);
@@ -52,6 +71,10 @@ public class TransportationSubsystem extends SubsystemBase {
 
   public Command transportUpAutoCommand(double stopTimetransportUp) {
     return this.run(() -> setSpeed(0.8, 0.8, 0.7, 0.7)).withTimeout(stopTimetransportUp);
+  }
+
+  public Command stopTransportAutoCommand() {
+    return this.run(this::stopMotors);
   }
 
   public Command transportDowmAutoCommand(double stopTimetransportDown) {
@@ -65,10 +88,12 @@ public class TransportationSubsystem extends SubsystemBase {
         Robot.transportationMotorTwoSpeed.getDouble(0) * -1));
   }
 
-  public Command transportUpCommand() {
-    return this.run(() -> setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
-        Robot.intakeHigherMotorSpeed.getDouble(0), Robot.transportationMotorOneSpeed.getDouble(0),
-        Robot.transportationMotorTwoSpeed.getDouble(0)));
+  public Command transportUpWithStopCommand() {
+    return this.run(() -> upWithStop());
+  }
+
+  public Command transportUpWithOutStopCommand() {
+    return this.run(() -> upWithOutStop());
   }
 
   public Command stopMotorsCommand() {
@@ -77,6 +102,7 @@ public class TransportationSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(trigger0.getValue() > 3500);
 
     // This method will be called once per scheduler run
   }

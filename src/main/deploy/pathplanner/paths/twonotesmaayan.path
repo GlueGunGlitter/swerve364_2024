@@ -20,12 +20,12 @@
         "y": 5.53
       },
       "prevControl": {
-        "x": 3.3658401534628677,
-        "y": 5.528149948222974
+        "x": 3.3632152180829658,
+        "y": 5.545895529126589
       },
       "nextControl": {
-        "x": 3.2682623455113635,
-        "y": 5.531850051777027
+        "x": 3.2708872808912655,
+        "y": 5.514104470873412
       },
       "isLocked": false,
       "linkedName": null
@@ -59,7 +59,18 @@
               "data": {
                 "name": "StopShooter1"
               }
-            },
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.4,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
             {
               "type": "named",
               "data": {
@@ -72,7 +83,7 @@
     },
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 0.95,
       "command": {
         "type": "parallel",
         "data": {
@@ -80,7 +91,7 @@
             {
               "type": "named",
               "data": {
-                "name": "TransportDown"
+                "name": "stopTranport"
               }
             }
           ]
@@ -96,7 +107,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -0.6437457141753273,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

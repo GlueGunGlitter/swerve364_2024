@@ -120,6 +120,14 @@ public class HaNavX implements Sendable {
 		}
 	}
 
+	public Rotation2d getYaw() {
+		try {
+			return Rotation2d.fromDegrees(-this.navX.getYaw() - yawOffsetDeg);
+		} catch (RuntimeException E) {
+			return Rotation2d.fromDegrees(0);
+		}
+	}
+
 	/**
 	 * @return The angle of the navX on the Z axis (perpendicular to earth, "yaw")
 	 *         in radians. Rotating

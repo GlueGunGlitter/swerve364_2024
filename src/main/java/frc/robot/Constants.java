@@ -17,6 +17,18 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public class AutomationsConstants {
+
+        public static final double SPEED_WHILE_DRIVE_TO_AMP_WHENE_SEE_APRILTAG = 0.6;
+        public static final double SPEED_WHILE_DRIVE_TO_AMP_WHENE_NOT_SEE_APRILTAG = 0.3;
+        public static final double SPEED_WHILE_DRIVE_TO_NOTE = 0.6;
+        public static final double TIME_DELAY_BETWEEN_SHOOTER_AND_TRANSPORTATION = 1;
+        public static final double METERS_OF_START_SHOTER = 2.5;
+        public static final double TOLERANCE_OF_DGREE = 4;
+        public static final double KP_OF_AIM_ASSEST = 0.008;
+
+    }
+
     public class ClimbConstants {
 
         public static final int CLIMB_RIGHT_MOTOR_PORT = 61;
@@ -141,7 +153,7 @@ public final class Constants {
             public static final int driveMotorID = 11;
             public static final int angleMotorID = 4;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-21.97); // -20.83);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-22.5); // -20.83);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
                     canCoderID, angleOffset);
@@ -152,7 +164,7 @@ public final class Constants {
             public static final int driveMotorID = 12;
             public static final int angleMotorID = 6;
             public static final int canCoderID = 5;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(43.76); // 49.85);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(48.51); // 49.85);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
                     canCoderID, angleOffset);
@@ -164,7 +176,7 @@ public final class Constants {
             public static final int driveMotorID = 13;
             public static final int angleMotorID = 8;
             public static final int canCoderID = 7;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(9.40); // 10.19);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(9.22); // 10.19);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
                     canCoderID, angleOffset);
@@ -175,7 +187,7 @@ public final class Constants {
             public static final int driveMotorID = 14;
             public static final int angleMotorID = 10;
             public static final int canCoderID = 9;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(113.90);// 112.41);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(109.59);// 112.41);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID,
                     angleMotorID,
                     canCoderID, angleOffset);
@@ -194,9 +206,9 @@ public final class Constants {
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
                 new PIDConstants(10, 0.0, 1), // Translation PID constants
-                new PIDConstants(0.005, 0, 0.0001), // Rotation constants
+                new PIDConstants(2, 0.005, 0.2), // Rotation constants
                 kMaxSpeedMetersPerSecond,
-                Swerve.robotRadius, // Drive base radius (distance from center to furthest module)
+                Swerve.robotRadius / 1000, // Drive base radius (distance from center to furthest module)
                 new ReplanningConfig());
     }
 }

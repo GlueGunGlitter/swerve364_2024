@@ -47,6 +47,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   }
 
+  public void shootBack(double nonStaticMotorSpeed, double staticMotorSpeed) {
+    nonStaticMotor.set(nonStaticMotorSpeed);
+    staticMotor.set(-staticMotorSpeed);
+  }
+
   public void stopMotors() {
     nonStaticMotor.stopMotor();
     staticMotor.stopMotor();
@@ -68,6 +73,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public Command shooterDownCommand() {
     return this.run(() -> shootDown(staticMotorSpeed - 0.3, nonStaticSpeed - 0.4))
         .withTimeout(ShooterConstants.SHOOT_TIMEOUT);
+  }
+
+  public Command shooterBackCommand() {
+    return this.run(() -> shootBack(0.1, 0.1)).withTimeout(0.1);
   }
 
   public Command stopMotorsCommand() {

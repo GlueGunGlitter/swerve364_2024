@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Vision.AprilTagVision;
 import frc.robot.Vision.NoteVision;
 import frc.robot.automations.driveAutomizations.AimAssist;
+import frc.robot.automations.driveAutomizations.AlignWithAmp;
 import frc.robot.automations.driveAutomizations.AmpAssist;
 import frc.robot.commands.driveCommands.TeleopSwerve;
 import frc.robot.subsystems.*;
@@ -36,6 +37,9 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+	// veriabels
+	public static double destenceFromAprilTag = 10;
 
 	/* Controllers */
 	public static final XboxController xboxController = new XboxController(0);
@@ -60,7 +64,7 @@ public class RobotContainer {
 	// private final JoystickButton IntakeEnableCommand = new JoystickButton(driver,
 	// XboxController.Button.kRightBumper.value);
 	/* Subsystems */
-	public final Swerve swerve = new Swerve();
+	public final static Swerve swerve = new Swerve();
 	public static final ShooterSubsystem shooter = new ShooterSubsystem();
 	public static final TransportationSubsystem transportation = new TransportationSubsystem();
 	public static final ClimbSubsystem climb = new ClimbSubsystem();
@@ -96,6 +100,7 @@ public class RobotContainer {
 	 * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
 	 */
 	private void configureButtonBindings() {
+
 		/* Driver Buttons */
 		zeroGyro.onTrue(new InstantCommand(() -> swerve.zeroHeading()));
 
@@ -112,7 +117,7 @@ public class RobotContainer {
 
 		// Transportation Triggers
 		commandXBoxController.a().toggleOnTrue(
-				transportation.transportUpCommand());
+				transportation.transportUpWithStopCommand());
 		commandXBoxController.x().toggleOnTrue(transportation.transportDownCommand());
 
 		// Climb Triggers
@@ -124,14 +129,29 @@ public class RobotContainer {
 				() -> -driver.getRawAxis(translationAxis),
 				() -> -driver.getRawAxis(strafeAxis),
 				() -> -driver.getRawAxis(rotationAxis))
+				.alongWith(transportation.transportUpWithStopCommand()));
 
-				.alongWith(transportation.transportUpCommand()));
+		commandXBoxController.leftTrigger().onFalse(transportation.transportUpWithStopCommand().withTimeout(3));
 
 		// Test Triggers
-		commandXBoxController.b().whileTrue(new AmpAssist(swerve,
+		commandXBoxController.b().whileTrue(new AlignWithAmp(swerve,
 				() -> -driver.getRawAxis(translationAxis),
 				() -> -driver.getRawAxis(strafeAxis),
-				() -> -driver.getRawAxis(rotationAxis)));
+				() -> -driver.getRawAxis(rotationAxis))
+				.andThen(new AmpAssist(swerve,
+						() -> -driver.getRawAxis(translationAxis),
+						() -> -driver.getRawAxis(strafeAxis),
+						() -> -driver.getRawAxis(rotationAxis),
+						transportation,
+						shooter)));
+
+		// .alongWith(new WaitCommand(3)
+		// .andThen(shootDownIfRobotIsNotMoving().alongWith(transportation.transportUpCommand()))));
+
+		// .andThen(swerve.driveForwordInRobotRelativCommand(
+		// () -> -driver.getRawAxis(translationAxis),
+		// () -> -driver.getRawAxis(strafeAxis),
+		// () -> -driver.getRawAxis(rotationAxis))));
 
 	}
 
@@ -159,27 +179,35 @@ public class RobotContainer {
 	private Command waitAndLoadCommand() {
 		return new WaitCommand(0.1)
 				.andThen(new WaitUntilCommand(() -> !areJoysticksMoving()))
-				.andThen(new WaitCommand(0.5))
-				.andThen(transportation.transportUpCommand());
+				.andThen(transportation.transportUpWithOutStopCommand());
 	}
 
 	public void registerCommand() {
 		NamedCommands.registerCommand("ShooterUpDown",
-				transportation.transportDowmAutoCommand(0.3)
-						.andThen(shooter.shootUpAutoCommand(2)
-								.alongWith(new WaitCommand(0.5)
+				transportation.transportDowmAutoCommand(0.1)
+						.andThen(shooter.shootUpAutoCommand(1)
+								.alongWith(new WaitCommand(0.6)
 										.andThen(transportation
-												.transportUpAutoCommand(2)))));
+												.transportUpAutoCommand(0.7)))));
 		NamedCommands.registerCommand("StopShooter1",
 				shooter.stopMotorsCommand());
 		NamedCommands.registerCommand("TransportUp",
-				transportation.transportUpAutoCommand(3));
+				transportation.transportUpAutoCommand(0.45));
 		NamedCommands.registerCommand("Shooter",
-				shooter.shootUpAutoCommand(2)
+				shooter.shootUpAutoCommand(1)
 						.alongWith(new WaitCommand(0.6)
-								.andThen(transportation.transportUpAutoCommand(1))));
-		// NamedCommands.registerCommand("TransportDown",
-		// transportationSubsystem.transportDowmAutoCommand(0.3));
+								.andThen(transportation.transportUpAutoCommand(0.7))));
+		NamedCommands.registerCommand("stopTranport", transportation.stopTransportAutoCommand());
+		NamedCommands.registerCommand("TransportShooterBack",
+				transportation.transportDowmAutoCommand(0.1)
+						.alongWith(shooter.shooterBackCommand()));
+		NamedCommands.registerCommand("ShooterUpDownLong",
+				transportation.transportDowmAutoCommand(0.1)
+						.andThen(shooter.shootUpAutoCommand(1.7)
+								.alongWith(new WaitCommand(0.6)
+										.andThen(transportation
+												.transportUpAutoCommand(0.7)))));
+
 		/*
 		 * p
 		 * NamedCommands.registerCommand("AutoAimAssist", new AimAssistAutonomus(
@@ -192,7 +220,8 @@ public class RobotContainer {
 				"AimAtNote",
 				new InstantCommand(
 						() -> PPHolonomicDriveController
-								.setRotationTargetOverride(swerve::getRotationTargetOverride)));
+								.setRotationTargetOverride(swerve::getRotationTargetOverride))
+						.withTimeout(0.1));
 	}
 
 	/**
@@ -208,5 +237,6 @@ public class RobotContainer {
 		return Math.abs(MathUtil.applyDeadband(driver.getRawAxis(translationAxis), Constants.stickDeadband)) > 0.0 ||
 				Math.abs(MathUtil.applyDeadband(driver.getRawAxis(strafeAxis), Constants.stickDeadband)) > 0.0 ||
 				Math.abs(MathUtil.applyDeadband(driver.getRawAxis(rotationAxis), Constants.stickDeadband)) > 0.0;
+
 	}
 }

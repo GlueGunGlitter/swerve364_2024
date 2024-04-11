@@ -34,7 +34,7 @@ public class AprilTagVision {
             var targets = result.getTargets();
             return targets.get(seesSpecificAprilTag(aprilTag_ID)).getBestCameraToTarget().getX();
         } else {
-            return 1.5;
+            return 10;
         }
     }
 
