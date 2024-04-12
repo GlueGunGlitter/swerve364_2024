@@ -6,16 +6,12 @@ package frc.robot.automations.driveAutomizations;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix.motorcontrol.IFollower;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.lib.util.COTSTalonFXSwerveConstants.WCP.SwerveXStandard.driveRatios;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -36,7 +32,7 @@ public class AmpAssist extends PIDCommand {
         new PIDController(0.5, 0, 0.05),
         // This should return the measurement
 
-        () -> RobotContainer.aprilTag_Vision.distanceFromTheMiddleOfTheAprilTag(10),
+        () -> test(),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
@@ -45,8 +41,6 @@ public class AmpAssist extends PIDCommand {
           double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
           double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
-          System.out.println(RobotContainer.destenceFromAprilTag);
-          System.out.println("jdjdnsjvnjvnsjnvsjndv" + startTransportionTimer.get());
 
           /* Drive */
           if (RobotContainer.aprilTag_Vision.seesAprilTags()) {
@@ -97,6 +91,14 @@ public class AmpAssist extends PIDCommand {
       return 6;
     } else {
       return 5;
+    }
+  }
+
+  public static double test(){
+    if (RobotContainer.aprilTag_Vision.seesAprilTags()) {
+      return RobotContainer.aprilTag_Vision.distanceFromTheMiddleOfTheAprilTag(10);
+    }else{
+      return 0;
     }
   }
   // Use addRequirements() here todeclare subsystem dependencies.

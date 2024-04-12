@@ -45,7 +45,7 @@ public class TransportationSubsystem extends SubsystemBase {
   }
 
   private void upWithStop() {
-    if (trigger0.getValue() > 3500) {
+    if (trigger0.getValue() > 3000) {
       stopMotors();
     } else {
       setSpeed(Robot.intakeLowerMotorSpeed.getDouble(0),
@@ -95,6 +95,9 @@ public class TransportationSubsystem extends SubsystemBase {
   public Command transportUpWithOutStopCommand() {
     return this.run(() -> upWithOutStop());
   }
+  public Command transportUpWithStopAutoCommand(){
+      return this.run(() -> upWithStop());
+  }
 
   public Command stopMotorsCommand() {
     return this.run(this::stopMotors);
@@ -102,7 +105,6 @@ public class TransportationSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(trigger0.getValue() > 3500);
 
     // This method will be called once per scheduler run
   }

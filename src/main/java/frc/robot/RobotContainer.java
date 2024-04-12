@@ -207,6 +207,7 @@ public class RobotContainer {
 								.alongWith(new WaitCommand(0.6)
 										.andThen(transportation
 												.transportUpAutoCommand(0.7)))));
+		NamedCommands.registerCommand("transportLazer", transportation.transportUpWithStopAutoCommand());
 
 		/*
 		 * p

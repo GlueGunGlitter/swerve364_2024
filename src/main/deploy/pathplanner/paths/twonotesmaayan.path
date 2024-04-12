@@ -74,24 +74,7 @@
             {
               "type": "named",
               "data": {
-                "name": "TransportUp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.95,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "stopTranport"
+                "name": "transportLazer"
               }
             }
           ]
