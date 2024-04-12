@@ -5,6 +5,7 @@
 package frc.robot.Vision;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 /** Add your docs here. */
 public class AprilTagVision {
@@ -14,8 +15,7 @@ public class AprilTagVision {
         aprilTagsCamera = new PhotonCamera("AprilTags-Camera");
     }
 
-    public int seesSpecificAprilTag(int aprilTag_ID) {
-        var result = aprilTagsCamera.getLatestResult();
+    public int seesSpecificAprilTag(int aprilTag_ID, PhotonPipelineResult result) {
         if (result.hasTargets()) {
             var targets = result.getTargets();
 
@@ -32,7 +32,7 @@ public class AprilTagVision {
         var result = aprilTagsCamera.getLatestResult();
         if (result.hasTargets()) {
             var targets = result.getTargets();
-            return targets.get(seesSpecificAprilTag(aprilTag_ID)).getBestCameraToTarget().getX();
+            return targets.get(seesSpecificAprilTag(aprilTag_ID, result)).getBestCameraToTarget().getX();
         } else {
             return 10;
         }
@@ -42,7 +42,7 @@ public class AprilTagVision {
         var result = aprilTagsCamera.getLatestResult();
         if (result.hasTargets()) {
             var targets = result.getTargets();
-            return targets.get(seesSpecificAprilTag(aprilTag_ID)).getBestCameraToTarget().getY();
+            return targets.get(seesSpecificAprilTag(aprilTag_ID, result)).getBestCameraToTarget().getY();
         } else {
             return 0;
         }
