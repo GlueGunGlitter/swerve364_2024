@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
 
@@ -24,8 +23,7 @@ public class AimAssist extends PIDCommand {
       DoubleSupplier rotationSup) {
     super(
         // The controller that the command will use
-        new PIDController(Constants.AutomationsConstants.KP_OF_AIM_ASSEST, 0,
-            Constants.AutomationsConstants.KP_OF_AIM_ASSEST / 10),
+        new PIDController(Constants.AimAssistConstans.KP, 0, Constants.AimAssistConstans.KD),
         // This should return the measurement
         () -> RobotContainer.note_vision.getRobotToNoteYaw(),
         // This should return the setpoint (can also be a constant)
@@ -40,7 +38,7 @@ public class AimAssist extends PIDCommand {
           if (RobotContainer.note_vision.seesNote()) {
             if (RobotContainer.xboxController.getYButton()) {
               swerve.drive(
-                  new Translation2d(Constants.AutomationsConstants.SPEED_WHILE_DRIVE_TO_NOTE, -strafeVal)
+                  new Translation2d(Constants.AimAssistConstans.SPEED_WHILE_DRIVE_TO_NOTE, -strafeVal)
                       .times(Constants.Swerve.maxSpeed),
                   -output * Constants.Swerve.maxAngularVelocity,
                   false,

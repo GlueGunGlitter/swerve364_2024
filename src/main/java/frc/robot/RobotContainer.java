@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.function.Supplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -131,7 +129,7 @@ public class RobotContainer {
 				() -> -driver.getRawAxis(rotationAxis))
 				.alongWith(transportation.transportUpWithStopCommand()));
 
-		commandXBoxController.leftTrigger().onFalse(transportation.transportUpWithStopCommand().withTimeout(3));
+		commandXBoxController.leftTrigger().onFalse(transportation.transportUpWithStopCommand().withTimeout(Constants.AimAssistConstans.TIME_DELAY_BETWEEN_STOPING_AIM_ASSIST_AND_STOP_TRANSPORTATION));
 
 		// Test Triggers
 		commandXBoxController.b().whileTrue(new AlignWithAmp(swerve,

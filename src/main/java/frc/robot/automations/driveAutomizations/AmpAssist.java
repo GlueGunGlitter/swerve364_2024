@@ -29,15 +29,14 @@ public class AmpAssist extends PIDCommand {
       DoubleSupplier rotationSup, TransportationSubsystem transportationSubsystem, ShooterSubsystem shooterSubsystem) {
     super(
         // The controller that the command will use
-        new PIDController(0.5, 0, 0.05),
+        new PIDController(Constants.AmpAssistConstants.KP, 0, Constants.AmpAssistConstants.KD),
         // This should return the measurement
 
-        () -> test(),
+        () -> RobotContainer.aprilTag_Vision.distanceFromTheMiddleOfTheAprilTag(wantedAprilTagID()),
         // This should return the setpoint (can also be a constant)
         () -> 0,
         // This uses the output
         output -> {
-          double translationVal = -MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
           double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
           double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
@@ -46,29 +45,29 @@ public class AmpAssist extends PIDCommand {
           if (RobotContainer.aprilTag_Vision.seesAprilTags()) {
 
             swerve.drive(
-                new Translation2d(-Constants.AutomationsConstants.SPEED_WHILE_DRIVE_TO_AMP_WHENE_SEE_APRILTAG,
+                new Translation2d(-Constants.AmpAssistConstants.SPEED_WHILE_DRIVE_TO_AMP_WHENE_SEE_APRILTAG,
                     output)
                     .times(Constants.Swerve.maxSpeed),
                 rotationVal * Constants.Swerve.maxAngularVelocity,
                 false,
                 true);
 
-            RobotContainer.destenceFromAprilTag = RobotContainer.aprilTag_Vision.distanceFromAprilTag(10);
+            RobotContainer.destenceFromAprilTag = RobotContainer.aprilTag_Vision.distanceFromAprilTag(wantedAprilTagID());
 
           } else {
             swerve.drive(
-                new Translation2d(-Constants.AutomationsConstants.SPEED_WHILE_DRIVE_TO_AMP_WHENE_NOT_SEE_APRILTAG,
+                new Translation2d(-Constants.AmpAssistConstants.SPEED_WHILE_DRIVE_TO_AMP_WHENE_NOT_SEE_APRILTAG,
                     strafeVal)
                     .times(Constants.Swerve.maxSpeed),
                 rotationVal * Constants.Swerve.maxAngularVelocity,
                 false,
                 true);
 
-            if (RobotContainer.destenceFromAprilTag < Constants.AutomationsConstants.METERS_OF_START_SHOTER) {
+            if (RobotContainer.destenceFromAprilTag < Constants.AmpAssistConstants.METERS_OF_START_SHOTER) {
               shooterSubsystem.shootDown(0.5, 0.4);
               startTransportionTimer.start();
               if (startTransportionTimer
-                  .hasElapsed(Constants.AutomationsConstants.TIME_DELAY_BETWEEN_SHOOTER_AND_TRANSPORTATION)) {
+                  .hasElapsed(Constants.AmpAssistConstants.TIME_DELAY_BETWEEN_SHOOTER_AND_TRANSPORTATION)) {
                 transportationSubsystem.setSpeed(0.8, 0.8, 0.7, 0.7);
               }
             }
@@ -77,7 +76,7 @@ public class AmpAssist extends PIDCommand {
             }
           }
 
-          if (RobotContainer.destenceFromAprilTag > Constants.AutomationsConstants.METERS_OF_START_SHOTER) {
+          if (RobotContainer.destenceFromAprilTag > Constants.AmpAssistConstants.METERS_OF_START_SHOTER || RobotContainer.xboxController.getBButtonReleased()) {
             startTransportionTimer.reset();
           }
 
@@ -93,14 +92,7 @@ public class AmpAssist extends PIDCommand {
       return 5;
     }
   }
-
-  public static double test(){
-    if (RobotContainer.aprilTag_Vision.seesAprilTags()) {
-      return RobotContainer.aprilTag_Vision.distanceFromTheMiddleOfTheAprilTag(10);
-    }else{
-      return 0;
-    }
-  }
+  
   // Use addRequirements() here todeclare subsystem dependencies.
   // Configure additional PID options by calling `getController` here.
 

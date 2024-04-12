@@ -182,7 +182,6 @@ public class Swerve extends SubsystemBase {
 
     public Command driveForwordInRobotRelativCommand(DoubleSupplier translationX, DoubleSupplier translationY,
             DoubleSupplier rotationSup) {
-        double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
         double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
         double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 

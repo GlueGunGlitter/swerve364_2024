@@ -4,17 +4,14 @@
 
 package frc.robot.automations.driveAutomizations;
 
-import java.sql.Driver;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.PubSub;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -28,7 +25,7 @@ public class AlignWithAmp extends PIDCommand {
       DoubleSupplier rotationSup) {
     super(
         // The controller that the command will use
-        new PIDController(0.0055, 0, 0.00055),
+        new PIDController(Constants.AlignWithAmpConstans.KP, 0, Constants.AlignWithAmpConstans.KD),
         // This should return the measurement
         () -> Math.IEEEremainder(swerve.getHeading().getDegrees(), 360),
         // This should return the setpoint (can also be a constant)
@@ -37,8 +34,6 @@ public class AlignWithAmp extends PIDCommand {
         output -> {
           double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
           double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
-          double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
-
           /* Drive */
           swerve.drive(
               new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
@@ -65,9 +60,9 @@ public class AlignWithAmp extends PIDCommand {
   @Override
   public boolean isFinished() {
     if (Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) < 90
-        + Constants.AutomationsConstants.TOLERANCE_OF_DGREE
+        + Constants.AlignWithAmpConstans.TOLERANCE_OF_DGREE
         && Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) > 90
-            - Constants.AutomationsConstants.TOLERANCE_OF_DGREE) {
+            - Constants.AlignWithAmpConstans.TOLERANCE_OF_DGREE) {
       return true;
 
     } else {

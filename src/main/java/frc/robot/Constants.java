@@ -10,7 +10,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 
 import frc.lib.util.SwerveModuleConstants;
@@ -18,16 +17,32 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.3;
 
-    public class AutomationsConstants {
+    public class AmpAssistConstants {
 
         public static final double SPEED_WHILE_DRIVE_TO_AMP_WHENE_SEE_APRILTAG = 0.6;
         public static final double SPEED_WHILE_DRIVE_TO_AMP_WHENE_NOT_SEE_APRILTAG = 0.3;
-        public static final double SPEED_WHILE_DRIVE_TO_NOTE = 0.6;
         public static final double TIME_DELAY_BETWEEN_SHOOTER_AND_TRANSPORTATION = 1;
         public static final double METERS_OF_START_SHOTER = 2.5;
-        public static final double TOLERANCE_OF_DGREE = 4;
-        public static final double KP_OF_AIM_ASSEST = 0.008;
+        public static final double KP = 0.5;
+        public static final double KD = 0.05;
 
+    }
+
+    public class AlignWithAmpConstans {
+        public static final double TOLERANCE_OF_DGREE = 4;
+        public static final double KP = 0.0055;
+        public static final double KD = 0.00055;
+
+    }
+
+
+    public class AimAssistConstans {
+        public static final double SPEED_WHILE_DRIVE_TO_NOTE = 0.6;
+        public static final double KP = 0.008;
+        public static final double KD = 0.0008;
+        public static final double TIME_DELAY_BETWEEN_STOPING_AIM_ASSIST_AND_STOP_TRANSPORTATION = 3;
+
+        
     }
 
     public class ClimbConstants {
