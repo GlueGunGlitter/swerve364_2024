@@ -24,18 +24,27 @@ public class AimAssist extends PIDCommand {
     super(
         // The controller that the command will use
         new PIDController(Constants.AimAssistConstans.KP, 0, Constants.AimAssistConstans.KD),
-        // This should return the measurement
+        // This should return the measurement 
+        // getRobotToNoteYaw() retern the horizontal engel from the camera to the note 
         () -> RobotContainer.note_vision.getRobotToNoteYaw(),
         // This should return the setpoint (can also be a constant)
+        // set the setpoint to 0 because if engel is 0 the note will be in the middel of the camera
+        // because of that the note will be in the meddel of the robot
         () -> 0,
         // This uses the output
         output -> {
+
+          // apply deadband
           double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
           double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
           double rotationVal = -MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
 
-          /* Drive */
+          // if the camera see not it will rotate to the note to get close as possible to the setpoint
+          // else it will the let the driver drive in the regular way
           if (RobotContainer.note_vision.seesNote()) {
+
+            // if the driver press y the robot will drive the note
+            // else the robot will only rotate to the note
             if (RobotContainer.xboxController.getYButton()) {
               swerve.drive(
                   new Translation2d(Constants.AimAssistConstans.SPEED_WHILE_DRIVE_TO_NOTE, -strafeVal)

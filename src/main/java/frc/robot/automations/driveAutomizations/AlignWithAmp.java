@@ -26,15 +26,21 @@ public class AlignWithAmp extends PIDCommand {
     super(
         // The controller that the command will use
         new PIDController(Constants.AlignWithAmpConstans.KP, 0, Constants.AlignWithAmpConstans.KD),
+
         // This should return the measurement
+        // Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) retern the robot engel and put it in the range of 180 and -180
         () -> Math.IEEEremainder(swerve.getHeading().getDegrees(), 360),
         // This should return the setpoint (can also be a constant)
+        /// set the setpoint to the desire engel according to the alliance
         () -> wantedAngle(),
         // This uses the output
         output -> {
+
+          // apply deadband
           double translationVal = MathUtil.applyDeadband(translationX.getAsDouble(), Constants.stickDeadband);
           double strafeVal = MathUtil.applyDeadband(translationY.getAsDouble(), Constants.stickDeadband);
-          /* Drive */
+          
+          // rotat the robot to the desire rengel
           swerve.drive(
               new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
               -output * Constants.Swerve.maxAngularVelocity,
@@ -42,31 +48,35 @@ public class AlignWithAmp extends PIDCommand {
               true);
         },
         swerve);
-
+    // create an swerve that i can use outside of the constractor
     this.swerve = swerve;
   };
 
-  private static int wantedAngle() {
-    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-      return 90;
-    } else {
-      return -90;
-    }
-  }
   // Use addRequirements() here to declare subsystem dependencies.
   // Configure additional PID options by calling `getController` here.
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) < 90
+    // talls that the command as fineshd if the robot get in to a small tolerance from the setpint 
+    if (Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) < wantedAngle()
         + Constants.AlignWithAmpConstans.TOLERANCE_OF_DGREE
-        && Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) > 90
+        && Math.IEEEremainder(swerve.getHeading().getDegrees(), 360) > wantedAngle()
             - Constants.AlignWithAmpConstans.TOLERANCE_OF_DGREE) {
       return true;
 
     } else {
       return false;
     }
+  }
+
+    // put the setpint to angel of the amp of your alliance
+  private static int wantedAngle() {
+    if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+      return 90;
+    } else {
+      return -90;
+    }
+    
   }
 }
