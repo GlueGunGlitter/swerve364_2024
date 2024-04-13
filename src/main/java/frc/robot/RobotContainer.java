@@ -198,7 +198,7 @@ public class RobotContainer {
 		NamedCommands.registerCommand("stopTranport", transportation.stopTransportAutoCommand());
 		NamedCommands.registerCommand("TransportShooterBack",
 				transportation.transportDowmAutoCommand(0.1)
-						.alongWith(shooter.shooterBackCommand()));
+						.alongWith(shooter.shooterBackAutoCommand()));
 		NamedCommands.registerCommand("ShooterUpDownLong",
 				transportation.transportDowmAutoCommand(0.1)
 						.andThen(shooter.shootUpAutoCommand(1.7)

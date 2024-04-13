@@ -26,11 +26,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Swerve extends SubsystemBase {
+
+    // create swere drive Odomtry object
     public SwerveDriveOdometry swerveOdometry;
+    
+    // create swere module object
     public SwerveModule[] mSwerveMods;
+
+    // create navex object
     private final HaNavX gyro;
 
     public Swerve() {
+        // give the path plathplaner all the metheds that he needs
         AutoBuilder.configureHolonomic(
                 this::getPose,
                 this::resetOdometry,
@@ -50,20 +57,23 @@ public class Swerve extends SubsystemBase {
                     return false;
                 },
                 this);
-
+        
+        // get the navx from the robot and set his degris to 0
         gyro = new HaNavX(SPI.Port.kMXP);
         gyro.zeroYaw();
 
+        // create all the modules
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants),
                 new SwerveModule(2, Constants.Swerve.Mod2.constants, true, false),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants, false, true),
         };
-
+        // set the swrve odometry
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
     }
 
+    // drive methed
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -82,8 +92,12 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    // drive methed to the autonomus
     public void driveRobotRelative(ChassisSpeeds speeds) {
+
+        // invers the rotaion 
         speeds.omegaRadiansPerSecond = speeds.omegaRadiansPerSecond * -1;
+
         SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
         DriverStation.reportWarning(Double.toString(speeds.omegaRadiansPerSecond), false);
         setModuleStates(states);
@@ -98,6 +112,7 @@ public class Swerve extends SubsystemBase {
         }
     }
 
+    
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule mod : mSwerveMods) {

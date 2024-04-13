@@ -12,6 +12,8 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class ClimbSubsystem extends SubsystemBase {
+
+  // create two Mortors with spark max
   CANSparkMax climbRightMotor = new CANSparkMax(Constants.ClimbConstants.CLIMB_RIGHT_MOTOR_PORT,
       MotorType.kBrushless);
   CANSparkMax climbLeftMotor = new CANSparkMax(Constants.ClimbConstants.CLIMB_LEFT_MOTOR_PORT,
@@ -23,6 +25,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    //set the the speed of the motors to be the RT output
     climbLeftMotor.set(RobotContainer.xboxController.getRightTriggerAxis());
     climbRightMotor.set(RobotContainer.xboxController.getRightTriggerAxis());
   }
