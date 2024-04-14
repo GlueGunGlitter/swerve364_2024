@@ -19,7 +19,7 @@ public class AprilTagVision {
         if (result.hasTargets()) {
             var targets = result.getTargets();
 
-            for (int i = 0; i < targets.size();) {
+            for (int i = 0; i < targets.size(); i++) {
                 if (targets.get(i).getFiducialId() == aprilTag_ID) {
                     return i;
                 }
