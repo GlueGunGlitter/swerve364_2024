@@ -9,12 +9,20 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 /** Add your docs here. */
 public class AprilTagVision {
+
+    // create photonvision camera 
     PhotonCamera aprilTagsCamera;
 
     public AprilTagVision() {
+        
+        // set the photonvision camera
         aprilTagsCamera = new PhotonCamera("AprilTags-Camera");
     }
 
+    /* 
+     get the wanted aprilTag on locion on the photonvisin dashbord
+     if it dose not see aperilTag it will retern -1 
+    */
     public int seesSpecificAprilTag(int aprilTag_ID, PhotonPipelineResult result) {
         if (result.hasTargets()) {
             var targets = result.getTargets();
@@ -28,6 +36,10 @@ public class AprilTagVision {
         return -1;
     }
 
+    /*
+     get the forward distance from the camera to whanted aprilTag 
+     if the camera dose not see aprilTag it will return 10 
+    */
     public double distanceFromAprilTag(int aprilTag_ID) {
         var result = aprilTagsCamera.getLatestResult();
         if (result.hasTargets()) {
@@ -38,6 +50,10 @@ public class AprilTagVision {
         }
     }
 
+    /*
+     get the horizontal destance from the cameera to wanted aprilTag 
+     if it dose not see aprilTags it will return 0
+    */
     public double distanceFromTheMiddleOfTheAprilTag(int aprilTag_ID) {
         var result = aprilTagsCamera.getLatestResult();
         if (result.hasTargets()) {
@@ -48,6 +64,7 @@ public class AprilTagVision {
         }
     }
 
+    // chack if the camera see aprilTag
     public boolean seesAprilTags() {
         var result = aprilTagsCamera.getLatestResult();
         if (result.hasTargets()) {

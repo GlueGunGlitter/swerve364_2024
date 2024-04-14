@@ -106,7 +106,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
  
-  // stop the motors
+  // command that stop the all motors of the shooter
   public Command stopMotorsCommand() {
     return this.run(this::stopMotors);
   }

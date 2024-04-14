@@ -143,10 +143,6 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    public Rotation2d invertRotation(Pose2d pose) {
-        return Rotation2d.fromDegrees(pose.getRotation().getDegrees() * -1);
-    }
-
     public void resetOdometry(Pose2d pose) {
         setHeading(pose.getRotation().unaryMinus());
         swerveOdometry.resetPosition(getGyroYaw(), getModulePositions(), pose);

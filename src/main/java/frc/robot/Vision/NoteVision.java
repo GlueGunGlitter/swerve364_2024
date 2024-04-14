@@ -9,14 +9,17 @@ import org.photonvision.PhotonCamera;
 /** Add your docs here. */
 public class NoteVision {
 
+    // create potonvision camera
     public static PhotonCamera notesCamera;
 
     public NoteVision() {
+
+        // set photonvision camera
         notesCamera = new PhotonCamera("Notes-Limelight");
     }
 
+    // get the angel from the camera th the note if dose not see note return 0
     public double getRobotToNoteYaw() {
-
         var result = notesCamera.getLatestResult();
         if (!result.hasTargets())
             return 0.0;
@@ -24,6 +27,7 @@ public class NoteVision {
             return result.getBestTarget().getYaw();
     }
 
+    // get if the camera see notes
     public boolean seesNote() {
         return notesCamera.getLatestResult().hasTargets();
     }
