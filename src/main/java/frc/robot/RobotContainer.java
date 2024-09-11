@@ -103,15 +103,14 @@ public class RobotContainer {
 
 		// Shooter Triggers
 		commandXBoxController.rightBumper().whileTrue(
-				shooter.shootUpCommand()
-						.alongWith(waitAndLoadCommand())
-						.deadlineWith(teleopSwerve(true)));
-
+				shooter.shootUpCommand().alongWith(new WaitCommand(0.6)
+						.andThen(waitAndLoadCommand())
+						.deadlineWith(teleopSwerve(true))));
 		commandXBoxController.leftBumper().whileTrue(
-				shooter.shooterDownCommand()
-						.alongWith(waitAndLoadCommand())
-						.deadlineWith(teleopSwerve(true)));
-
+				shooter.shooterDownCommand().alongWith(new WaitCommand(0.6)
+						.andThen(waitAndLoadCommand())
+						.deadlineWith(teleopSwerve(true))));
+		
 		// Transportation Triggers
 		commandXBoxController.a().toggleOnTrue(
 				transportation.transportUpWithStopCommand());

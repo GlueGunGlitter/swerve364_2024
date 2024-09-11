@@ -64,9 +64,9 @@ public class Swerve extends SubsystemBase {
 
         // create all the modules
         mSwerveMods = new SwerveModule[] {
-                new SwerveModule(0, Constants.Swerve.Mod0.constants),
-                new SwerveModule(1, Constants.Swerve.Mod1.constants),
-                new SwerveModule(2, Constants.Swerve.Mod2.constants, true, false),
+                new SwerveModule(0, Constants.Swerve.Mod0.constants,false, false ),
+                new SwerveModule(1, Constants.Swerve.Mod1.constants,true, true ),
+                new SwerveModule(2, Constants.Swerve.Mod2.constants, false, true),
                 new SwerveModule(3, Constants.Swerve.Mod3.constants, false, true),
         };
         // set the swrve odometry

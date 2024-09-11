@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // set inverted mode
     nonStaticMotor.setInverted(false);
-    staticMotor.setInverted(true);
+    staticMotor.setInverted(false);
 
     // set the default speed to be 0
     staticMotorSpeed = 0;
